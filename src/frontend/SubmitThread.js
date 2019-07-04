@@ -12,10 +12,12 @@ export default class SubmitThread extends React.Component {
     }
 
     render() {
-        return (<div className='SubmitThread'>
-            <input type = 'text' placeholder = 'enter the title' value= {this.state.titleThread}></input>
-            <textarea placeholder = 'enter the comment' value = {this.state.commentThread}></textarea>
-            <button type ='submit' value = 'SUBMIT'></button>
-        </div>);
+        return (
+            <div className='SubmitThread'>
+                <input className='item' type='text' placeholder='enter the title' value={this.state.titleThread}></input>
+                <textarea className='item' placeholder='enter the comment' value={this.state.commentThread}></textarea>
+                <button className='item' type='submit' value='SUBMIT'>SUBMIT</button>
+            </div>
+        );
     }
 }
