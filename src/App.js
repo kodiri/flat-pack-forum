@@ -6,8 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>These are some changes hopefully different to Richards</p>
-        <p>Let's introduce a git conflict</p>
+        <p>I don't really like these changes</p>
         <a
           className="App-link"
           href="https://reactjs.org"
