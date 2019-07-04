@@ -103,7 +103,7 @@ app.get('/rest/posts/:thread', (_req, res) => {
     ]));
 })
 
-app.post('/rest/submitthread', (_req, res) => {
+app.post('/rest/submit-thread', (_req, res) => {
     console.log("Submit Thread request received");
     res.end(JSON.stringify({
         result: true,
@@ -111,7 +111,7 @@ app.post('/rest/submitthread', (_req, res) => {
     }))
 });
 
-app.post('/rest/submitpost', (_req, res) => {
+app.post('/rest/submit-post', (_req, res) => {
     console.log("Submit Post request received");
     res.end(JSON.stringify({
         result: true,
