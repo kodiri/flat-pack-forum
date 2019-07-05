@@ -6,7 +6,13 @@ export default class ForumIndex extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            threadLinks: 
+                [<ThreadLink text="threadlink 1"/>,
+                <ThreadLink text="threadlink 2"/>,
+                <ThreadLink text="threadlink 3"/>,
+                <ThreadLink text="threadlink 4"/>,
+                <ThreadLink text="threadlink 5"/>,
+                <ThreadLink text="threadlink 6"/>]
         };
     }
 
@@ -18,21 +24,23 @@ export default class ForumIndex extends React.Component {
                     <Link to='/submit'><img src={require('./common/images/addThread.png')} alt='add thread' /></Link>
                 </div>
             </div>
-            <div className='threadContainer'>
-                <Link>thead link 1</Link>
-            </div>
-            <div className='threadContainer'>
-                <Link>thead link 2</Link>
-            </div>
-            <div className='threadContainer'>
-                <Link>thead link 3</Link>
-            </div>
-            <div className='threadContainer'>
-                <Link>thead link 4</Link>
-            </div>
-            <div className='threadContainer'>
-                <Link>thead link 5</Link>
-            </div>
+            {this.state.threadLinks}
         </>);
+    }
+}
+
+class ThreadLink extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: props.text
+        };
+    }
+
+    render() {
+        return (
+        <div className='threadContainer'>
+            <Link>{this.state.text}</Link>
+        </div>);
     }
 }
