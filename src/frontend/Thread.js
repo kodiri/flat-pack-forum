@@ -28,7 +28,7 @@ class UserDetails extends React.Component
     render() {
         return (
             <div>
-                <p className='pUser'>{this.props.user}</p>
+                <h4>{this.props.user}</h4>
             </div>
         );
     }
@@ -39,8 +39,7 @@ class Content extends React.Component
     render() {
         return (
             <div>
-                <textarea className='contentArea'
-                rows='5' cols='100'>pls. add your comments here!</textarea>
+            <p className='pUser'>Content</p>
             </div>
         );
     }
