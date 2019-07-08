@@ -8,17 +8,9 @@ class Post extends React.Component
     render() {
         return (
             <div>
-                <UserDetails user='I am user alpa' />
-                <Content />
-                <UserDetails user='I am user bravo'/>
-                <Content />
-                <UserDetails user='I am user chally'/>
-                <Content />
-                <UserDetails user='I am user delta'/>
-                <Content />
-                <UserDetails user='I am user fredi'/>
-                <Content />
-            </div>
+                <UserDetails  user={this.props.user}/>
+                <Content  content={this.props.content}/>
+         </div>
         );
     }
 }
@@ -39,7 +31,7 @@ class Content extends React.Component
     render() {
         return (
             <div>
-            <p className='pUser'>Content</p>
+            <p className='pUser'>{this.props.content}</p>
             </div>
         );
     }
@@ -58,7 +50,11 @@ export default class Thread extends React.Component {
     render() {
         return (
             <div>
-                <Post />
+                <Post user='I am user alpa' content='content1'/>
+                <Post user='I am user brave' content='content2'/>
+                <Post user='I am user chally' content='content3'/>
+                <Post user='I am user delta' content='content4'/>
+                <Post user='I am user echo' content='content5'/>
             </div>
         );
     }
