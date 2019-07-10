@@ -1,8 +1,8 @@
-.thread {
+.Thread {
     border: 5px solid rgb(97, 102, 177);
 }
 
-.grid-container {
+.Thread .grid-container {
     grid-gap: 5px;
     background-color: #2196F3;
     padding: 5px;
@@ -11,12 +11,19 @@
     grid-template-columns: 90px 1fr;
   }
 
- .user {
+.Thread .user {
     background-color: lime;
     font-size: 16px;
  }
 
- .content {
+.Thread .content {
     background-color: yellow;
  }
 
+.Thread .pUser {
+    border: 10px solid goldenrod;
+    font-size: 12px; 
+    background-color: rgb(199, 200, 206);
+    text-align: left;
+  
+}
