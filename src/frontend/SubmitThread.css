@@ -8,18 +8,18 @@
 
 }
 
-.item {
+.SubmitThread .item {
      margin: 10px;
     text-align: center;
     align-self: center;
 }
-textarea.item {
+.SubmitThread textarea.item {
     width: 250px;
     height: 250px;
     
 }
  
-input.item {
+.SubmitThread input.item {
   width: 500px;
 }
  
