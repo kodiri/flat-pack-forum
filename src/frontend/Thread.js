@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './Thread.css'
 
 class Post extends React.Component 
@@ -7,9 +6,9 @@ class Post extends React.Component
    
     render() {
         return (
-            <div>
-                <UserDetails  user={this.props.user}/>
-                <Content  content={this.props.content}/>
+            <div className = 'grid-container'>
+                <div className = 'user'><UserDetails user={this.props.user}/></div>
+                <div className = 'content'><Content content={this.props.content}/></div>              
          </div>
         );
     }
@@ -31,7 +30,7 @@ class Content extends React.Component
     render() {
         return (
             <div>
-            <p className='pUser'>{this.props.content}</p>
+            <p>{this.props.content}</p>
             </div>
         );
     }
@@ -49,7 +48,7 @@ export default class Thread extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className = 'thread'>
                 <Post user='I am user alpa' content='content1'/>
                 <Post user='I am user brave' content='content2'/>
                 <Post user='I am user chally' content='content3'/>
