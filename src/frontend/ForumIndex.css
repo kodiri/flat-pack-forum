@@ -10,7 +10,7 @@
     padding-left: 10px;
     color: lime;
   }
-  .ForumIndex .threadContainer{
+  .ForumIndex .ThreadLink{
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;

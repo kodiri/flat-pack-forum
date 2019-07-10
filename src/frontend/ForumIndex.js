@@ -41,7 +41,7 @@ class ThreadLink extends React.Component {
 
     render() {
         return (
-        <div className='threadContainer'>
+        <div className='ThreadLink'>
             <Link to={`/thread/${this.state.num}`}>{this.state.text}</Link>
         </div>);
     }
