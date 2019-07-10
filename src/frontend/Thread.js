@@ -5,7 +5,7 @@ import './Thread.css'
 class Post extends React.Component {
     render() {
         return (
-            <div>
+            <div className='Post'>
                 <UserDetails user={this.props.user} />
                 <Content content={this.props.content} />
             </div>
@@ -16,7 +16,7 @@ class Post extends React.Component {
 class UserDetails extends React.Component {
     render() {
         return (
-            <div>
+            <div className='UserDetails'>
                 <h4>{this.props.user}</h4>
             </div>
         );
@@ -26,7 +26,7 @@ class UserDetails extends React.Component {
 class Content extends React.Component {
     render() {
         return (
-            <div>
+            <div className='Content'>
                 <p className='pUser'>{this.props.content}</p>
             </div>
         );
