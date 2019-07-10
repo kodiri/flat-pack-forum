@@ -1,13 +1,12 @@
 import React from 'react';
-
 import './Thread.css'
 
 class Post extends React.Component {
     render() {
         return (
-            <div className='Post'>
-                <UserDetails user={this.props.user} />
-                <Content content={this.props.content} />
+            <div className = 'Post grid-container'>
+                <div className = 'user'><UserDetails user={this.props.user}/></div>
+                <div className = 'content'><Content content={this.props.content}/></div>              
             </div>
         );
     }

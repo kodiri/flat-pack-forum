@@ -1,3 +1,25 @@
+.Thread {
+    border: 5px solid rgb(97, 102, 177);
+}
+
+.Thread .grid-container {
+    grid-gap: 5px;
+    background-color: #2196F3;
+    padding: 5px;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 90px 1fr;
+  }
+
+.Thread .user {
+    background-color: lime;
+    font-size: 16px;
+ }
+
+.Thread .content {
+    background-color: yellow;
+ }
+
 .Thread .pUser {
     border: 10px solid goldenrod;
     font-size: 12px; 
