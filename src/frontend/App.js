@@ -24,7 +24,7 @@ class App extends React.Component {
           <Route exact path='/' component={ForumIndex} />
           <Route exact path='/index' component={ForumIndex} />
           <Route exact path='/submit' component={SubmitThread} />
-          <Route exact path='/thread' component={Thread} />
+          <Route exact path='/thread:number' component={Thread} />
         </Switch>
       </div>
     );
