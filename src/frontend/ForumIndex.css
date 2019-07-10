@@ -1,4 +1,4 @@
-.headerContainer {
+.ForumIndex .headerContainer {
     background-color: #222;
     height: 60px;
     margin-bottom: 15px;
@@ -10,7 +10,7 @@
     padding-left: 10px;
     color: lime;
   }
-  .threadContainer{
+  .ForumIndex .threadContainer{
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
@@ -21,7 +21,7 @@
       margin: 10px;
 
   }
-  .addThreadButton {
+  .ForumIndex .addThreadButton {
       margin: 10px;
       height: 20px;
       position:fixed;

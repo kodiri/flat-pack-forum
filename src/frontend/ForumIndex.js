@@ -18,7 +18,7 @@ export default class ForumIndex extends React.Component {
     }
 
     render() {
-        return (<>
+        return (<div className='ForumIndex'>
             <div className='headerContainer'>
                 Flat-Pack-Forum
                 <div className='addThreadButton'>
@@ -26,7 +26,7 @@ export default class ForumIndex extends React.Component {
                 </div>
             </div>
             {this.state.threadLinks}
-        </>);
+        </div>);
     }
 }
 
