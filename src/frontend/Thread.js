@@ -37,17 +37,18 @@ export default class Thread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            posts: [<Post user='UserName: alpha' content='post content1' />,
+            <Post user='UserName: brave' content='post content2' />,
+            <Post user='UserName: chally' content='post content3' />,
+            <Post user='UserName: delta' content='post content4' />,
+            <Post user='UserName: echo' content='post content5' />]
         };
     }
 
     render() {
         return (
             <div className='Thread'>
-                <Post user='UserName: alpa' content='post content1' />
-                <Post user='UserName: brave' content='post content2' />
-                <Post user='UserName: chally' content='post content3' />
-                <Post user='UserName: delta' content='post content4' />
-                <Post user='UserName: echo' content='post content5' />
+                {this.state.posts}
             </div>
         );
     }
