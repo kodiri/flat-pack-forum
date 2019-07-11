@@ -36,11 +36,11 @@ export default class Thread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: [<Post user='UserName: alpha' content='post content1' />,
-            <Post user='UserName: brave' content='post content2' />,
-            <Post user='UserName: chally' content='post content3' />,
-            <Post user='UserName: delta' content='post content4' />,
-            <Post user='UserName: echo' content='post content5' />]
+            posts: [<Post key='1' user='UserName: alpha' content='post content1' />,
+            <Post key='2'user='UserName: brave' content='post content2' />,
+            <Post key='3'user='UserName: chally' content='post content3' />,
+            <Post key='4'user='UserName: delta' content='post content4' />,
+            <Post key='5'user='UserName: echo' content='post content5' />]
         };
     }
 
