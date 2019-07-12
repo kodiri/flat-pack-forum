@@ -1,30 +1,13 @@
-.ForumIndex .headerContainer {
-    background-color: #222;
-    height: 60px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: space-between;
-    padding-left: 10px;
-    color: lime;
-  }
+
   .ForumIndex .ThreadLink{
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
-      border: 1px solid red;
-      background-color: aqua;
+      border: 1px solid darkgray;
+      background-color: whitesmoke;
       height: 180px;
       padding: 30px;
       margin: 10px;
 
   }
-  .ForumIndex .addThreadButton {
-      margin: 10px;
-      height: 20px;
-      position:fixed;
-      right: 0px;
-      border-radius: 50%;
-  } 
+ 

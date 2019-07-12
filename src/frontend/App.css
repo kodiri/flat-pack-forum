@@ -1,9 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   color: black;
   font-family: 'Open Sans', Helvetica, sans-serif;
-  box-sizing: border-box;
+  background-color: whitesmoke;
 }
 
 .App {
@@ -18,6 +22,7 @@ body {
     'Header'
     'ForumIndex'
     'Footer';
+   
 }
 
 /* Give every child element its grid name */
