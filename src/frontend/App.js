@@ -4,6 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ForumIndex from './ForumIndex';
 import SubmitThread from './SubmitThread';
 import Thread from './Thread';
+import SignIn from './authentication/SignIn';
 import Header from './common/Header';
 import SideBar from './common/SideBar';
 import Footer from './common/Footer';
@@ -30,6 +31,7 @@ class App extends React.Component {
           <Route exact path='/index' component={ForumIndex} />
           <Route exact path='/submit' component={SubmitThread} />
           <Route exact path='/thread/:number' component={Thread} />
+          <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>
