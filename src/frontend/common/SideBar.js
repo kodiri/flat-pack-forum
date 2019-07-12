@@ -16,7 +16,10 @@ export default class SideBar extends React.Component {
                         to='/' 
                         iconName='homeBlackIcon' 
                         linkName='Forum Index'/>
-                    <li class="item">Submit</li>
+                    <NavigationBarLink 
+                        to='/submit' 
+                        iconName='submitThreadBlackIcon' 
+                        linkName='Submit Thread'/>
                     <li class="item">Thread</li>
                 </ul>
             </aside>
