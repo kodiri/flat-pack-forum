@@ -1,0 +1,11 @@
+.SignIn {
+    display: flex;
+    flex-direction: column;
+    padding: 150px;
+}
+
+.SignIn .title {
+    padding-bottom: 40px;
+    font-size: 26px;
+    font-weight: 500;
+}
