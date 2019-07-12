@@ -1,0 +1,33 @@
+.NavigationBar, .NavigationBar .NavigationBarLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.NavigationBar {
+    justify-content: space-between;
+    padding: 1%;
+}
+
+.NavigationBar .item {
+    flex-grow: 1;
+}
+
+.NavigationBar .signIn a {
+    float: right;
+    text-decoration: none;
+}
+
+.NavigationBar .signIn .icon {
+    padding-right: 5px;
+}
+
+.NavigationBar .title {
+    text-align: left;
+    text-decoration: none;
+    color: green;
+    font-weight: 600;
+    font-size: 28px;
+    margin: 0px;
+}
+

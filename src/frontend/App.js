@@ -4,6 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ForumIndex from './ForumIndex';
 import SubmitThread from './SubmitThread';
 import Thread from './Thread';
+import NavigationBar from './common/NavigationBar';
 import NotFound from './common/NotFound';
 
 import './App.css';
@@ -21,6 +22,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <NavigationBar />
         <Switch>
           <Route exact path='/' component={ForumIndex} />
           <Route exact path='/index' component={ForumIndex} />
