@@ -19,12 +19,6 @@ export default class ForumIndex extends React.Component {
 
     render() {
         return (<div className='ForumIndex'>
-            <div className='headerContainer'>
-                Flat-Pack-Forum
-                <div className='addThreadButton'>
-                    <Link to='/submit'><img src={require('./common/images/addThread.png')} alt='add thread' /></Link>
-                </div>
-            </div>
             {this.state.threadLinks}
         </div>);
     }

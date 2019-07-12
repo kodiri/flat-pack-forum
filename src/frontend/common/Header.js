@@ -1,10 +1,10 @@
 import React from 'react';
 import NavigationBarLink from './NavigationBarLink';
 
-import './NavigationBar.css';
+import './Header.css';
 
-export default function NaviationBar() {
-    return (<header className='NavigationBar'>
+export default function Header() {
+    return (<header className='Header'>
         <a className='title item'
             href='/'>
                 Flat-Pack-Forum

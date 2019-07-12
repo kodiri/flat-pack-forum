@@ -4,7 +4,9 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ForumIndex from './ForumIndex';
 import SubmitThread from './SubmitThread';
 import Thread from './Thread';
-import NavigationBar from './common/NavigationBar';
+import Header from './common/Header';
+import SideBar from './common/SideBar';
+import Footer from './common/Footer';
 import NotFound from './common/NotFound';
 
 import './App.css';
@@ -22,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <NavigationBar />
+        <Header />
         <Switch>
           <Route exact path='/' component={ForumIndex} />
           <Route exact path='/index' component={ForumIndex} />
@@ -31,6 +33,8 @@ class App extends React.Component {
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>
+        <SideBar />
+        <Footer />
       </div>
     );
   }

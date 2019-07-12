@@ -1,0 +1,64 @@
+.SideBar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 240px;
+    position: fixed;
+    overflow-y: auto;
+    transform: translateX(-245px);
+    transition: all .6s ease-in-out;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    z-index: 2;
+    /* Needs to sit above the hamburger menu icon */
+}
+
+.SideBar.active {
+    transform: translateX(0);
+}
+
+.SideBar .menu-icon {
+    position: fixed; /* Needs to stay visible for all mobile scrolling */
+    display: flex;
+    top: 5px;
+    left: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: #DADAE3;
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+    padding: 12px;
+  }
+
+.SideBar .close-icon {
+    position: absolute;
+    visibility: visible;
+    top: 8px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.SideBar .list {
+    padding: 0;
+    margin-top: 85px;
+    list-style-type: none;
+}
+
+.SideBar .list .NavigationBarLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 20px 20px 40px;
+    color: black;
+    text-decoration: none;
+}
+
+.SideBar .list .NavigationBarLink .icon {
+    padding-right: 5px;
+}
+
+.SideBar .list .NavigationBarLink:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
