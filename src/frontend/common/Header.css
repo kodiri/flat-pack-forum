@@ -1,28 +1,28 @@
-.NavigationBar, .NavigationBar .NavigationBarLink {
+.Header, .Header .NavigationBarLink {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.NavigationBar {
+.Header {
     justify-content: space-between;
     padding: 1%;
 }
 
-.NavigationBar .item {
+.Header .item {
     flex-grow: 1;
 }
 
-.NavigationBar .signIn a {
+.Header .signIn a {
     float: right;
     text-decoration: none;
 }
 
-.NavigationBar .signIn .icon {
+.Header .signIn .icon {
     padding-right: 5px;
 }
 
-.NavigationBar .title {
+.Header .title {
     text-align: left;
     text-decoration: none;
     color: green;

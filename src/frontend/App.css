@@ -1,5 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+  color: black;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  /* Assign grid instructions to our parent grid container, mobile-first (hide the SideBar) */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas:
+    'Header'
+    'ForumIndex'
+    'Footer';
+}
+
+/* Give every child element its grid name */
+.Header {
+  grid-area: Header;
+}
+
+.SideBar {
+  grid-area: SideBar;
+}
+
+.ForumIndex {
+  grid-area: ForumIndex;
+}
+
+.Footer {
+  grid-area: Footer;
+}
+
+/* Non-mobile styles, 750px breakpoint */
+@media only screen and (min-width: 46.875em) {
+  /* Show the SideBar */
+  .App {
+    grid-template-columns: 240px 1fr;
+    grid-template-areas:
+      "SideBar Header"
+      "SideBar ForumIndex"
+      "SideBar Footer";
+  }
+
+  .SideBar {
+    position: relative;
+    transform: translateX(0);
+  }
+
+  .SideBar .close-icon {
+    visibility: hidden;
+  }
 }
