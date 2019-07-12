@@ -20,7 +20,6 @@ export default class SideBar extends React.Component {
                         to='/submit' 
                         iconName='submitThreadBlackIcon' 
                         linkName='Submit Thread'/>
-                    <li class="item">Thread</li>
                 </ul>
             </aside>
         );
