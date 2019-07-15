@@ -7,6 +7,7 @@ import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import SubmitThread from './SubmitThread';
 import NotFound from './common/NotFound';
+import SignIn from './authentication/SignIn';
 import Thread from './Thread';
 
 configure({ adapter: new Adapter() });
@@ -18,6 +19,7 @@ configure({ adapter: new Adapter() });
         forumIndexExists: true,
         submitThreadExists: false,
         threadExists: false,
+        signInExists: false,
         notFoundExists: false
     }
 }, {
@@ -27,6 +29,17 @@ configure({ adapter: new Adapter() });
         forumIndexExists: false,
         submitThreadExists: true,
         threadExists: false,
+        signInExists: false,
+        notFoundExists: false,
+    }
+}, {
+    it: 'App shows SignIn page when the current path is "/signIn"',
+    currentPath: ['/signIn'],
+    expect: {
+        forumIndexExists: false,
+        submitThreadExists: false,
+        threadExists: false,
+        signInExists: true,
         notFoundExists: false,
     }
 }, {
@@ -36,6 +49,7 @@ configure({ adapter: new Adapter() });
         forumIndexExists: false,
         submitThreadExists: false,
         threadExists: true,
+        signInExists: false,
         notFoundExists: false,
     }
 }, {
@@ -45,6 +59,7 @@ configure({ adapter: new Adapter() });
         forumIndexExists: false,
         submitThreadExists: false,
         threadExists: false,
+        signInExists: false,
         notFoundExists: true,
     }
 }].forEach(scenario => {
@@ -58,7 +73,7 @@ configure({ adapter: new Adapter() });
         );
 
         //then
-        let { forumIndexExists, submitThreadExists, threadExists,
+        let { forumIndexExists, submitThreadExists, threadExists, signInExists,
             notFoundExists } = scenario.expect;
         expect(wrapper.find(ForumIndex).exists())
             .toEqual(forumIndexExists);
@@ -66,6 +81,8 @@ configure({ adapter: new Adapter() });
             .toEqual(submitThreadExists);
         expect(wrapper.find(Thread).exists())
             .toEqual(threadExists);
+        expect(wrapper.find(SignIn).exists())
+            .toEqual(signInExists);
         expect(wrapper.find(NotFound).exists())
             .toEqual(notFoundExists);
     });
