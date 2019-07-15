@@ -110,7 +110,7 @@ app.post('/rest/submit-thread', jsonParser, (_req, res) => {
     res.end(JSON.stringify({
         result: true,
         message: "Successfully submitted thread to the backend!"
-    }))
+    }));
 });
 
 app.post('/rest/submit-post', jsonParser, (req, res) => {

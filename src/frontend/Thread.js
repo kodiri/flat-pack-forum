@@ -5,36 +5,28 @@ export default class Thread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: [<Post key='1' user='UserName: alpha' content='post content1' />,
-            <Post key='2'user='UserName: brave' content='post content2' />,
-            <Post key='3'user='UserName: chally' content='post content3' />,
-            <Post key='4'user='UserName: delta' content='post content4' />,
-            <Post key='5'user='UserName: echo' content='post content5' />]
+            posts: []
         };
     }
 
-    handleSubmit = post => {
-        // v This is where you would update the array of posts
-        //     - Instead of only adding a single post you would
-        //       get an ARRAY of posts from the backend, and you 
-        //       must call setState HERE and update Thread's array
-        //       with that array
-        this.setState(prevState => {
-            const posts = prevState.posts;
-            return {
-                ...prevState,
-                posts: prevState.posts.concat(
-                    <Post key={posts.length + 1}
-                        user='UserName: Guest'
-                        content={post} />)
-            }   
+    componentDidMount() {
+        fetch(`/rest/posts/${this.props.match.params.number}`).then(res => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then(posts => {
+            this.setState({ posts });
         });
+    }
+
+    handleSubmit = posts => {
+        this.setState({ posts });
     }
 
     render() {
         return (
             <div className='Thread'>
-                {this.state.posts}
+                {this.state.posts.map(({ user: { username }, content }, i) => {
+                    return <Post key={i} user={username} content={content} />;
+                })}
                 <SubmitPost handleSubmit={this.handleSubmit} />
             </div>
         );
@@ -68,9 +60,8 @@ class SubmitPost extends React.Component {
         }).then(res => {
             return res.ok ? res.json() : Promise.reject();
         }).then(res => {
-            console.log(res);
+            this.props.handleSubmit(res.posts);
         });
-        this.props.handleSubmit(this.state.post); // placeholder hardcoded method of adding posts
         this.setState(() => ({
             post: '',
             enableSubmit: false
@@ -82,8 +73,8 @@ class SubmitPost extends React.Component {
             <textarea onChange={this.handleTA}
                 placeholder='Type your post here!'
                 value={this.state.post} />
-            <input type='submit' 
-                disabled={!this.state.enableSubmit} 
+            <input type='submit'
+                disabled={!this.state.enableSubmit}
                 value='Post'
                 onClick={this.submitPost} />
         </div>);
@@ -93,9 +84,9 @@ class SubmitPost extends React.Component {
 class Post extends React.Component {
     render() {
         return (
-            <div className = 'Post'>
-                <UserDetails user={this.props.user}/>
-                <Content content={this.props.content}/>        
+            <div className='Post'>
+                <UserDetails user={this.props.user} />
+                <Content content={this.props.content} />
             </div>
         );
     }
