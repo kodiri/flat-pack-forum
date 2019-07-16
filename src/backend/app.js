@@ -1,3 +1,4 @@
+const getThreads = require('./threads');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -6,57 +7,7 @@ const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
 
-let posts = [{  // Backend's TEMPORARY array of Thread posts
-    user: {
-        username: 'Peter7737'
-    },
-    content: 'Yesterday was a beautiful Sunny day, tommorrow may be ' + 
-        'even better!'
-},
-{
-    user: {
-        username: 'Infelible_Ireden'
-    },
-    content: 'wat'
-},
-{
-    user: {
-        username: 'Peter7737'
-    },
-    content: 'Good day to you, are you enjoying the Sun\'s brilliant' +
-        ' rays today?'
-},
-{
-    user: {
-        username: 'xZeronLegends_00x'
-    },
-    content: 'Ignore Peter7737, he is a bot, please report this thread'
-},
-{
-    user: {
-        username: 'domdanouseWalker'
-    },
-    content: 'i think peter is actually a real person'
-},
-{
-    user: {
-        username: 'Peter7737'
-    },
-    content: 'Come my Sun brothers, there is plenty of Sun for ' + 
-        'everyone to praise!'
-},
-{
-    user: {
-        username: 'Admin'
-    },
-    content: 'That\'s enough Peter, I\'m closing this thread'
-},
-{
-    user: {
-        username: 'xZeronLegends_00x'
-    },
-    content: 'FINALLY'
-}];
+let threads = getThreads();
 
 app.get('/refresh-session', (_req, res) => {
     res.end(JSON.stringify({
@@ -66,43 +17,32 @@ app.get('/refresh-session', (_req, res) => {
 });
 
 app.get('/rest/threads', (_req, res) => {
-    res.end(JSON.stringify([
-        {
-            title: 'Help, how to fix a chair with uneven leges??s?'
-        },
-        {
-            title: 'Monitor isn\'t working running latest update 2.6.11'
-        },
-        {
-            title: 'Is there shortcut to open JKWindow Dialog box?'
-        },
-        {
-            title: 'LAST USER TO POST IN THIS THREAD WINS!1!!'
-        },
-        {
-            title: 'Where do I go to submit application for AUWL Summer 20XX??'
-        },
-        {
-            title: 'Confused abt transport in Niaple, overly expensive trains?'
-        },
-        {
-            title: 'What is the most important discovery in human history?'
-        },
-        {
-            title: 'dealing with noisy neighbours'
-        },
-        {
-            title: 'I uploaded my work to the portal last night but my ' + 
-                'profile hasn\'t updated yet'
-        },
-        {
-            title: 'Cannot overwrite save ERROR211: Unknown, 0x86a8f886 exce...'
-        },
-    ]));
+    res.end(JSON.stringify());
 });
 
-app.get('/rest/posts/:thread', (_req, res) => {
-    res.end(JSON.stringify(posts));
+app.get('/rest/threads/titles', (_req, res) => {
+    res.end(JSON.stringify());
+});
+
+app.get('/rest/posts/:threadNumber', (req, res) => {
+    console.log(`Received GET request for /rest/posts/${req.params.threadNumber}`);
+    const threadNumber = parseInt(req.params.threadNumber);
+    if (threadNumber.toString() !== req.params.threadNumber) {
+        res.end(JSON.stringify({
+            result: false,
+            message: 'Invalid URL, /rest/posts/:number requires an Integer'
+        }));
+    } else {
+        const thread = threads.find(thread => thread.number === threadNumber);
+        if (thread) {
+            res.end(JSON.stringify(thread.posts));
+        } else {
+            res.end(JSON.stringify({
+                result: false,
+                message: `Thread ${threadNumber} does not exist!`
+            }));
+        }
+    }
 })
 
 app.post('/rest/submit-thread', jsonParser, (_req, res) => {
@@ -113,21 +53,31 @@ app.post('/rest/submit-thread', jsonParser, (_req, res) => {
     }));
 });
 
-app.post('/rest/submit-post', jsonParser, (req, res) => {
-    console.log("Submit Post request received");
+app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     const post = req.body.post;
-    posts.push({
-        user: {
-            username: 'Guest'
-        },
-        content: post
-    });
-    res.end(JSON.stringify({
-        result: true,
-        message: "Successfully submitted post to the backend!",
-        post: `The post: ${post}`,
-        posts: posts
-    }));
+    const threadNumber = parseInt(req.params.threadNumber);
+    const thread = threads.find(thread => thread.number === threadNumber);
+    console.log(`Submit Post request received on Thread <${threadNumber}>` + 
+        `Post: <${post}>`);
+    if (thread) {
+        thread.posts.push({
+            user: {
+                username: 'Guest'
+            },
+            content: post
+        });
+        res.end(JSON.stringify({
+            result: true,
+            message: "Successfully submitted post to the backend!",
+            post: `The post: ${post}`,
+            posts: thread.posts
+        }));
+    } else {
+        res.end(JSON.stringify({
+            result: false,
+            message: `Thread ${threadNumber} does not exist!`
+        }));
+    }
 });
 
 app.use(express.static(path.join(__dirname, buildPath)));

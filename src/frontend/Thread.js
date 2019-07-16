@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import './Thread.css'
 
 export default class Thread extends React.Component {
@@ -12,8 +13,12 @@ export default class Thread extends React.Component {
     componentDidMount() {
         fetch(`/rest/posts/${this.props.match.params.number}`).then(res => {
             return res.ok ? res.json() : Promise.reject();
-        }).then(posts => {
-            this.setState({ posts });
+        }).then(res => {
+            if (Array.isArray(res)) {
+                this.setState({ posts: res });
+            } else {
+                this.setState({ posts: undefined });
+            }
         });
     }
 
@@ -22,14 +27,15 @@ export default class Thread extends React.Component {
     }
 
     render() {
-        return (
+        return this.state.posts ?
             <div className='Thread'>
                 {this.state.posts.map(({ user: { username }, content }, i) => {
                     return <Post key={i} user={username} content={content} />;
                 })}
-                <SubmitPost handleSubmit={this.handleSubmit} />
-            </div>
-        );
+                <SubmitPost handleSubmit={this.handleSubmit}
+                    threadNumber={this.props.match.params.number} />
+            </div> :
+            <Redirect to='/not-found' />;
     }
 }
 
@@ -51,7 +57,7 @@ class SubmitPost extends React.Component {
     }
 
     submitPost = () => {
-        fetch(`/rest/submit-post`, {
+        fetch(`/rest/submit-post/${this.props.threadNumber}`, {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -60,7 +66,13 @@ class SubmitPost extends React.Component {
         }).then(res => {
             return res.ok ? res.json() : Promise.reject();
         }).then(res => {
-            this.props.handleSubmit(res.posts);
+            if (res.result) {
+                this.props.handleSubmit(res.posts);
+            } else {
+                console.log(`Error: Failed to submit post: ` +
+                    `Post: ${this.state.post} ` + 
+                    `ThreadNumber: ${this.props.threadNumber}`);
+            }
         });
         this.setState(() => ({
             post: '',
