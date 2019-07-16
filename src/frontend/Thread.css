@@ -1,17 +1,35 @@
 .Post {
-    grid-gap: 5px;
-    
-    padding: 5px;
     display: grid;
+    grid-gap: 3px;
+    padding: 0px;
     width: 100%;
-    grid-template-columns: 90px 1fr;
+    grid-template-columns: 100px 1fr;
+    grid-template-areas: 'avatar UserDetails'
+      'avatar Content';
+      border: solid 1px lightslategray;
+      margin-bottom: 16px;
   }
 
+.Thread {
+  margin:5px;
+}
+
 .Thread .UserDetails {
-    background-color: ;
-    font-size: 16px;
+    grid-area: UserDetails;
+    font-size: 15px;
+    text-align: left;
+    height: 40px;
+    background-color: lightgray;
  }
 
 .Thread .Content {
-    background-color: gray;
+    grid-area: Content;
+    font-size: 15px;
+    /* background-color: gray; */
+ }
+
+ .avatar {
+   grid-area: avatar;
+   height: 100px;
+   width: 100px;
  }

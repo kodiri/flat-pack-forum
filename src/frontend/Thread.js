@@ -1,6 +1,6 @@
 import React from 'react';
 import './Thread.css'
-
+import avatar from './common/images/avatar.png';
 export default class Thread extends React.Component {
     constructor(props) {
         super(props);
@@ -85,6 +85,7 @@ class Post extends React.Component {
     render() {
         return (
             <div className='Post'>
+                <img className='avatar'src={avatar} alt='xyz'/>
                 <UserDetails user={this.props.user} />
                 <Content content={this.props.content} />
             </div>
@@ -96,6 +97,7 @@ class UserDetails extends React.Component {
     render() {
         return (
             <div className='UserDetails'>
+                
                 <h4>{this.props.user}</h4>
             </div>
         );
