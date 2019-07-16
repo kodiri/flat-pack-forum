@@ -1,4 +1,4 @@
-## A demo of the website is available at [flat-page-forum.herokuapp.com](http://flat-pack-forum.herokuapp.com/)!
+## A demo of the website is available at [flat-page-forum.herokuapp.com](https://flat-pack-forum.herokuapp.com/)!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
