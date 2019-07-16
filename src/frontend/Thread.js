@@ -81,15 +81,19 @@ class SubmitPost extends React.Component {
     }
 
     render() {
-        return (<div className='SubmitPost'>
-            <textarea onChange={this.handleTA}
-                placeholder='Type your post here!'
-                value={this.state.post} />
-            <input type='submit'
-                disabled={!this.state.enableSubmit}
-                value='Post'
-                onClick={this.submitPost} />
-        </div>);
+        return (
+            <div className='SubmitPost'>
+                <textarea onChange={this.handleTA}
+                    placeholder='Type your post here!'
+                    value={this.state.post}
+                    className='submitNewPost' />
+                <input type='submit'
+                    disabled={!this.state.enableSubmit}
+                    value='Post'
+                    onClick={this.submitPost}
+                    className='submitButton' />
+            </div>
+        );
     }
 }
 
@@ -97,7 +101,7 @@ class Post extends React.Component {
     render() {
         return (
             <div className='Post'>
-                <img className='avatar'src={avatar} alt='xyz'/>
+                <img className='avatar'src={avatar} alt='avatar'/>
                 <UserDetails user={this.props.user} />
                 <Content content={this.props.content} />
             </div>
