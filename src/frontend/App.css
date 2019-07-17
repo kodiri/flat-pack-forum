@@ -30,7 +30,7 @@ body {
   grid-area: Header;
 }
 
-.SideBar {
+#SideBar {
   grid-area: SideBar;
 }
 
@@ -41,7 +41,19 @@ body {
 .Footer {
   grid-area: Footer;
 }
-
+.menu-icon {
+  position: fixed; /* Needs to stay visible for all mobile scrolling */
+  display: flex;
+  top: 5px;
+  left: 10px;
+  align-items: center;
+  justify-content: center;
+  background-color: #DADAE3;
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  padding: 12px;
+}
 /* Non-mobile styles, 750px breakpoint */
 @media only screen and (min-width: 46.875em) {
   /* Show the SideBar */
@@ -53,12 +65,12 @@ body {
       "SideBar Footer";
   }
 
-  .SideBar {
+  #SideBar {
     position: relative;
     transform: translateX(0);
   }
 
-  .SideBar .close-icon {
+  #SideBar .close-icon {
     visibility: hidden;
   }
 }
