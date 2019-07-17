@@ -7,14 +7,20 @@ export default class ForumIndex extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            threadLinks: 
-                [<ThreadLink key='1' text="threadlink 1" num='1'/>,
-                <ThreadLink key='2' text="threadlink 2" num='2'/>,
-                <ThreadLink key='3' text="threadlink 3" num='3'/>,
-                <ThreadLink key='4' text="threadlink 4" num='4'/>,
-                <ThreadLink key='5' text="threadlink 5" num='5'/>,
-                <ThreadLink key='6' text="threadlink 6" num='6'/>]
+            threadLinks: []
         };
+    }
+
+    componentDidMount() {
+        fetch(`/rest/threads/titles`).then(res => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then(titles => {
+            this.setState({
+                threadLinks: titles.map((title, i) => {
+                    return <ThreadLink key={i} num={i} text={title} />
+                })
+            });
+        });
     }
 
     render() {
@@ -35,8 +41,8 @@ class ThreadLink extends React.Component {
 
     render() {
         return (
-        <div className='ThreadLink'>
-            <Link to={`/thread/${this.state.num}`}>{this.state.text}</Link>
-        </div>);
+            <div className='ThreadLink'>
+                <Link to={`/thread/${this.state.num}`}>{this.state.text}</Link>
+            </div>);
     }
 }
