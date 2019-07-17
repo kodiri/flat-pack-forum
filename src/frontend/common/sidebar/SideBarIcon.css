@@ -1,0 +1,12 @@
+#SideBarIcon {
+    position: fixed;
+    /* Needs to stay visible for all mobile scrolling */
+    top: 5px;
+    left: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: #DADAE3;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 12px;
+}

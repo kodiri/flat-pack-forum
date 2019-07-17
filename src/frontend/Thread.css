@@ -1,17 +1,6 @@
-.Post {
-    display: grid;
-    grid-gap: 3px;
-    padding: 0px;
-    width: 100%;
-    grid-template-columns: 100px 1fr;
-    grid-template-areas: 'avatar UserDetails'
-      'avatar Content';
-      border: solid 1px lightslategray;
-      margin-bottom: 16px;
-  }
-
 .Thread {
   margin:5px;
+  grid-area: ForumIndex;
 }
 
 .Thread .UserDetails {
@@ -28,25 +17,37 @@
     /* background-color: gray; */
  }
 
- .avatar {
+ .Thread .Post {
+  display: grid;
+  grid-gap: 3px;
+  padding: 0px;
+  width: 100%;
+  grid-template-columns: 100px 1fr;
+  grid-template-areas: 'avatar UserDetails'
+    'avatar Content';
+    border: solid 1px lightslategray;
+    margin-bottom: 16px;
+}
+
+.Thread .avatar {
    grid-area: avatar;
    height: 100px;
    width: 100px;
  }
 
- .SubmitPost {
+ .Thread .SubmitPost {
    display: flex;
    flex-direction: column;
  }
 
- .submitButton {
+ .Thread .submitButton {
     background-color: black;
     color:white;
     width:60px;
     height:40px;
  }
 
- .submitNewPost {
+ .Thread .submitNewPost {
    height: 100px;
    border: 3px solid ;
  }

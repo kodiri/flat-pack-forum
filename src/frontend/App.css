@@ -20,7 +20,7 @@ body {
   grid-template-rows: 50px 1fr 50px;
   grid-template-areas:
     'Header'
-    'ForumIndex'
+    'MainContent'
     'Footer';
    
 }
@@ -30,35 +30,35 @@ body {
   grid-area: Header;
 }
 
-.SideBar {
+#SideBar {
   grid-area: SideBar;
 }
 
-.ForumIndex {
-  grid-area: ForumIndex;
+.ForumIndex, .Thread, .SignIn, .SubmitThread {
+  grid-area: MainContent;
 }
 
 .Footer {
   grid-area: Footer;
 }
 
-/* Non-mobile styles, 750px breakpoint */
-@media only screen and (min-width: 46.875em) {
+/* Non-mobile styles, 750px breakpoint // eg. DESKTOP */
+@media only screen and (min-width: 750px) {
   /* Show the SideBar */
   .App {
     grid-template-columns: 140px 1fr;
     grid-template-areas:
       "SideBar Header"
-      "SideBar ForumIndex"
+      "SideBar MainContent"
       "SideBar Footer";
   }
 
-  .SideBar {
-    position: relative;
+  #SideBar {
+    position: fixed;
     transform: translateX(0);
   }
 
-  .SideBar .close-icon {
-    visibility: hidden;
+  #SideBarIcon {
+    display: none;
   }
 }

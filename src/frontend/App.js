@@ -1,12 +1,11 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-
 import ForumIndex from './ForumIndex';
 import SubmitThread from './SubmitThread';
 import Thread from './Thread';
 import SignIn from './authentication/SignIn';
 import Header from './common/Header';
-import SideBar from './common/SideBar';
+import SideBar from './common/sidebar/SideBar';
 import Footer from './common/Footer';
 import NotFound from './common/NotFound';
 
