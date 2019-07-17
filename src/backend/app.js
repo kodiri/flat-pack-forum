@@ -17,11 +17,11 @@ app.get('/refresh-session', (_req, res) => {
 });
 
 app.get('/rest/threads', (_req, res) => {
-    res.end(JSON.stringify());
+    res.end(JSON.stringify(threads));
 });
 
 app.get('/rest/threads/titles', (_req, res) => {
-    res.end(JSON.stringify());
+    res.end(JSON.stringify(threads.map(thread => thread.title)));
 });
 
 app.get('/rest/posts/:threadNumber', (req, res) => {
