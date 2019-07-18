@@ -20,7 +20,8 @@ app.get('/rest/thread/:threadNumber', (req, res) => {
     handleThreadRequest(
         req.params.threadNumber,
         res,
-        thread => res.end(JSON.stringify(thread))
+        thread => res.end(JSON.stringify(thread)),
+        '/rest/thread/:threadNumber'
     )
 });
 
@@ -36,7 +37,8 @@ app.get('/rest/posts/:threadNumber', (req, res) => {
     console.log(`Received GET request for /rest/posts/${req.params.threadNumber}`);
     handleThreadRequest(req.params.threadNumber,
         res,
-        thread => res.end(JSON.stringify(thread.posts)));
+        thread => res.end(JSON.stringify(thread.posts)),
+        '/rest/posts/:threadNumber');
 })
 
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
@@ -80,7 +82,8 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
                 post: `The post: ${post}`,
                 posts: thread.posts
             }));
-        }
+        },
+        '/rest/submit-post/:threadNumber'
     );
 });
 
@@ -92,12 +95,12 @@ app.get('*', (_req, res) => {
 app.listen(port, () => console.log(`Flatpack Express Backend ` + 
     `now listening on port ${port}!`));
 
-function handleThreadRequest(requestedNum, res, handleThread) {
+function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoint') {
     const threadNumber = parseInt(requestedNum);
     if (threadNumber.toString() !== requestedNum) {
         res.end(JSON.stringify({
             result: false,
-            message: 'Invalid URL, /rest/posts/:number requires an Integer'
+            message: `Invalid URL, ${endpoint} requires an Integer`
         }));
     } else {
         const thread = threads.find(thread => thread.number === threadNumber);
