@@ -6,16 +6,17 @@ export default class Thread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            title: 'Loading Thread, please wait!',
             posts: []
         };
     }
 
     componentDidMount() {
-        fetch(`/rest/posts/${this.props.match.params.number}`).then(res => {
+        fetch(`/rest/thread/${this.props.match.params.number}`).then(res => {
             return res.ok ? res.json() : Promise.reject();
         }).then(res => {
-            if (Array.isArray(res)) {
-                this.setState({ posts: res });
+            if (res.hasOwnProperty('title')) {
+                this.setState({ title: res.title, posts: res.posts });
             } else {
                 this.setState({ posts: undefined });
             }
@@ -29,6 +30,7 @@ export default class Thread extends React.Component {
     render() {
         return this.state.posts ?
             <div className='Thread'>
+                <div id='title'><div id='prefix'>Thread: </div>{this.state.title}</div>
                 {this.state.posts.map(({ user: { username }, content }, i) => {
                     return <Post key={i} user={username} content={content} />;
                 })}
