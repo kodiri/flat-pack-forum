@@ -1,6 +1,19 @@
 .Thread {
-  margin:5px;
-  grid-area: ForumIndex;
+  margin: 5px;
+}
+
+.Thread #title {
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 10px 0px;
+  margin: 10px 0px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.Thread #title #prefix {
+  color: rgba(0, 0, 0, 0.65);
+  display: inline;
 }
 
 .Thread .UserDetails {
@@ -8,13 +21,12 @@
     font-size: 15px;
     text-align: left;
     height: 40px;
-    background-color: lightgray;
+    background-color: #eee;
  }
 
 .Thread .Content {
     grid-area: Content;
     font-size: 15px;
-    /* background-color: gray; */
  }
 
  .Thread .Post {

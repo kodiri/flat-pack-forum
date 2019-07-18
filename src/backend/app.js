@@ -16,6 +16,14 @@ app.get('/refresh-session', (_req, res) => {
     }));
 });
 
+app.get('/rest/thread/:threadNumber', (req, res) => {
+    handleThreadRequest(
+        req.params.threadNumber,
+        res,
+        thread => res.end(JSON.stringify(thread))
+    )
+});
+
 app.get('/rest/threads', (_req, res) => {
     res.end(JSON.stringify(threads));
 });
@@ -26,23 +34,9 @@ app.get('/rest/threads/titles', (_req, res) => {
 
 app.get('/rest/posts/:threadNumber', (req, res) => {
     console.log(`Received GET request for /rest/posts/${req.params.threadNumber}`);
-    const threadNumber = parseInt(req.params.threadNumber);
-    if (threadNumber.toString() !== req.params.threadNumber) {
-        res.end(JSON.stringify({
-            result: false,
-            message: 'Invalid URL, /rest/posts/:number requires an Integer'
-        }));
-    } else {
-        const thread = threads.find(thread => thread.number === threadNumber);
-        if (thread) {
-            res.end(JSON.stringify(thread.posts));
-        } else {
-            res.end(JSON.stringify({
-                result: false,
-                message: `Thread ${threadNumber} does not exist!`
-            }));
-        }
-    }
+    handleThreadRequest(req.params.threadNumber,
+        res,
+        thread => res.end(JSON.stringify(thread.posts)));
 })
 
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
@@ -67,29 +61,27 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
 
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     const post = req.body.post;
-    const threadNumber = parseInt(req.params.threadNumber);
-    const thread = threads.find(thread => thread.number === threadNumber);
-    console.log(`Submit Post request received on Thread <${threadNumber}>` + 
-        `Post: <${post}>`);
-    if (thread) {
-        thread.posts.push({
-            user: {
-                username: 'Guest'
-            },
-            content: post
-        });
-        res.end(JSON.stringify({
-            result: true,
-            message: "Successfully submitted post to the backend!",
-            post: `The post: ${post}`,
-            posts: thread.posts
-        }));
-    } else {
-        res.end(JSON.stringify({
-            result: false,
-            message: `Thread ${threadNumber} does not exist!`
-        }));
-    }
+    console.log(`Submit Post request received on Thread ` + 
+        `<${req.params.threadNumber}> Post: <${post}>`);
+    handleThreadRequest(req.params.threadNumber,
+        res,
+        thread => {
+            const newPost = {
+                user: {
+                    username: 'Guest'
+                },
+                content: post
+            };
+            thread.posts.push(newPost);
+            console.log("Created new post: ", newPost);
+            res.end(JSON.stringify({
+                result: true,
+                message: "Successfully submitted post to the backend!",
+                post: `The post: ${post}`,
+                posts: thread.posts
+            }));
+        }
+    );
 });
 
 app.use(express.static(path.join(__dirname, buildPath)));
@@ -99,3 +91,23 @@ app.get('*', (_req, res) => {
 
 app.listen(port, () => console.log(`Flatpack Express Backend ` + 
     `now listening on port ${port}!`));
+
+function handleThreadRequest(requestedNum, res, handleThread) {
+    const threadNumber = parseInt(requestedNum);
+    if (threadNumber.toString() !== requestedNum) {
+        res.end(JSON.stringify({
+            result: false,
+            message: 'Invalid URL, /rest/posts/:number requires an Integer'
+        }));
+    } else {
+        const thread = threads.find(thread => thread.number === threadNumber);
+        if (thread) {
+            handleThread(thread);
+        } else {
+            res.end(JSON.stringify({
+                result: false,
+                message: `Thread ${threadNumber} does not exist!`
+            }));
+        }
+    }
+}
