@@ -11,27 +11,40 @@ export default class SubmitThread extends React.Component {
         };
     }
 
+    handleClick = () => {
+        fetch('/rest/submit-thread', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                title: this.state.threadTitle,
+                comment: this.state.threadComment
+            })
+        }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
+            
+        });
+    }
+
     textHandler = event => {
         let value = event.target.value;
         let name = event.target.name;
-        this.setState(() => ({[name]: value}));
+        this.setState(() => ({ [name]: value }));
     }
 
     render() {
         return (
             <div className='SubmitThread'>
-                <input className='item' 
+                <input className='item'
                     name='threadTitle'
-                    type='text' 
+                    type='text'
                     placeholder='enter the title'
                     value={this.state.threadTitle}
                     onChange={this.textHandler} />
                 <textarea className='item'
                     name='threadComment'
-                    placeholder='enter the comment' 
-                    value={this.state.threadComment} 
+                    placeholder='enter the comment'
+                    value={this.state.threadComment}
                     onChange={this.textHandler} />
-                <button className='item' type='submit' value='SUBMIT'>SUBMIT</button>
+                <button onClick={this.handleClick} className='item' type='submit' value='SUBMIT'>SUBMIT</button>
             </div>
         );
     }
