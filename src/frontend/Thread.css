@@ -20,8 +20,21 @@
     grid-area: UserDetails;
     font-size: 15px;
     text-align: left;
-    height: 40px;
     background-color: #eee;
+ }
+
+ .Thread .UserDetails .header {
+   display: grid;
+   padding: 3px;
+   grid-template-columns: 90% 10%;
+ }
+
+ .Thread .UserDetails .commentDate {
+   opacity: 0.65;
+ }
+
+ .Thread .UserDetails .postNumber {
+   text-align: right;
  }
 
 .Thread .Content {
