@@ -30,6 +30,11 @@
     color: white;
     font-weight: 600;
     font-size: 28px;
-    margin: 70px;
+    display: flex;
+    align-items: center;
 }
 
+.Header .title img {
+    padding: 2px;
+    padding-right: 10px;
+}
