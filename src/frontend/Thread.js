@@ -130,7 +130,7 @@ class UserDetails extends React.Component {
         return (
             <div className='UserDetails'>
                 <div className='header'>
-                    <div className='username'>{user.username}</div>
+                    <div>{formatUser(user)}</div>
                     <div class='postNumber' id={postNumber}>#{
                         postNumber
                     }</div>
@@ -160,5 +160,30 @@ class Content extends React.Component {
                 <p className='pUser'>{this.props.content}</p>
             </div>
         );
+    }
+}
+
+function formatUser(user) {
+    switch (user.userType) {
+        case 'Guest':
+            return (<>
+                <div className='username'>{user.username} </div>
+                <div className='guest identifier'>Guest</div>
+            </>);
+        case 'User':
+            return (<>
+                <div className='username'>{user.username} </div>
+                <div className='user identifier'>User</div>
+            </>);
+        case 'Admin':
+            return (<>
+                <div className='username'>{user.username} </div>
+                <div className='admin identifier'>Admin</div>
+            </>);
+        default:
+            return (<>
+                <div className='username'>{user.username} </div>
+                <div className='guest identifier'>Guest</div>
+            </>);
     }
 }

@@ -21,8 +21,8 @@ export default class ForumIndex extends React.Component {
                     firstPost,
                     lastPost
                 }, i) => {
-                    return <ThreadLink key={i} 
-                        num={i} 
+                    return <ThreadLink key={i}
+                        num={i}
                         title={title}
                         firstPost={firstPost}
                         lastPost={lastPost} />
@@ -40,43 +40,64 @@ export default class ForumIndex extends React.Component {
 
 class ThreadLink extends React.Component {
     render() {
-        const {num, title, firstPost, lastPost} = this.props;
+        const { num, title, firstPost, lastPost } = this.props;
         return (
             <div className='ThreadLink'>
+                <div className='threadDetails'>
+                    <div className='threadNumber'>#{num}</div>
+                    <div className='creator'>Created by {
+                        formatUser(firstPost.user)
+                    }<div className='time'>{
+                        createDate(firstPost.date)
+                    }</div></div>
+                    <div className='lastPost'>Last post by {
+                        formatUser(lastPost.user)
+                    }<div className='time'>{
+                        createDate(lastPost.date)
+                    }</div></div>
+                </div>
                 <div className='body'>
                     <Link to={`/thread/${num}`}>{title}</Link>
                 </div>
-                <div className='footer'>
-                    <div className='threadNumber'>#{num}</div>
-                    <div className='creator'>Created by {
-                        firstPost.user.username
-                    }<div className='time'>{
-                        new Date(firstPost.date).toLocaleDateString(
-                            "en-UK",
-                            {
-                                year: 'numeric',
-                                month: 'numeric',
-                                day: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                second: 'numeric'
-                            })
-                    }</div></div>
-                    <div className='lastPost'>Last post by {
-                        lastPost.user.username
-                    }<div className='time'>{
-                        new Date(lastPost.date).toLocaleDateString(
-                            "en-UK",
-                            {
-                                year: 'numeric',
-                                month: 'numeric',
-                                day: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                second: 'numeric'
-                            })
-                    }</div></div>
-                </div>
             </div>);
     }
+}
+
+function formatUser(user) {
+    switch (user.userType) {
+        case 'Guest':
+            return (<>
+                <div className='guest identifier'>Guest</div>
+                <div className='username'> {user.username}</div>
+            </>);
+        case 'User':
+            return (<>
+                <div className='user identifier'>User</div>
+                <div className='username'> {user.username}</div>
+            </>);
+        case 'Admin':
+            return (<>
+                <div className='admin identifier'>Admin</div>
+                <div className='username'> {user.username}</div>
+            </>);
+        default:
+            return (<>
+                <div className='guest identifier'>Guest</div>
+                <div className='username'> {user.username}</div>
+            </>);
+    }
+}
+
+function createDate(unixTimestamp) {
+    return new Date(unixTimestamp).toLocaleDateString(
+        "en-UK",
+        {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
+    );
 }
