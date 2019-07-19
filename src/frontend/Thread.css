@@ -17,49 +17,61 @@
 }
 
 .Thread .UserDetails {
-    grid-area: UserDetails;
-    font-size: 15px;
-    text-align: left;
-    height: 40px;
-    background-color: #eee;
- }
+  grid-area: UserDetails;
+  font-size: 15px;
+  text-align: left;
+  background-color: #eee;
+}
+
+.Thread .UserDetails .header {
+  display: grid;
+  padding: 3px;
+  grid-template-columns: 90% 10%;
+}
+
+.Thread .UserDetails .commentDate {
+  opacity: 0.65;
+}
+
+.Thread .UserDetails .postNumber {
+  text-align: right;
+}
 
 .Thread .Content {
-    grid-area: Content;
-    font-size: 15px;
- }
+  grid-area: Content;
+  font-size: 15px;
+}
 
- .Thread .Post {
+.Thread .Post {
   display: grid;
   grid-gap: 3px;
   padding: 0px;
   width: 100%;
   grid-template-columns: 100px 1fr;
-  grid-template-areas: 'avatar UserDetails'
-    'avatar Content';
-    border: solid 1px lightslategray;
-    margin-bottom: 16px;
+  grid-template-areas: 'avatar UserDetails' 'avatar Content';
+  border: solid 1px lightslategray;
+  margin-bottom: 16px;
 }
 
 .Thread .avatar {
-   grid-area: avatar;
-   height: 100px;
-   width: 100px;
- }
+  grid-area: avatar;
+  height: 100px;
+  width: 100px;
+}
 
- .Thread .SubmitPost {
-   display: flex;
-   flex-direction: column;
- }
+.Thread .SubmitPost {
+  display: flex;
+  flex-direction: column;
+}
 
- .Thread .submitButton {
-    background-color: black;
-    color:white;
-    width:60px;
-    height:40px;
- }
+.Thread .submitButton {
+  background-color: black;
+  color: white;
+  width: 60px;
+  height: 40px;
+}
 
- .Thread .submitNewPost {
-   height: 100px;
-   border: 3px solid ;
- }
+.Thread .submitNewPost {
+  height: 100px;
+  border: 3px solid;
+}

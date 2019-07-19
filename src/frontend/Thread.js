@@ -31,9 +31,19 @@ export default class Thread extends React.Component {
         return this.state.posts ?
             <div className='Thread'>
                 <div id='title'><div id='prefix'>Thread: </div>{this.state.title}</div>
-                {this.state.posts.map(({ user: { username }, content }, i) => {
-                    return <Post key={i} user={username} content={content} />;
-                })}
+                {
+                    this.state.posts.map(({
+                        user,
+                        content,
+                        date
+                    }, i) => {
+                        return <Post key={i}
+                            user={user}
+                            content={content}
+                            date={date}
+                            postNumber={i} />;
+                    })
+                }
                 <SubmitPost handleSubmit={this.handleSubmit}
                     threadNumber={this.props.match.params.number} />
             </div> :
@@ -101,11 +111,14 @@ class SubmitPost extends React.Component {
 
 class Post extends React.Component {
     render() {
+        const {user, content, date, postNumber} = this.props;
         return (
             <div className='Post'>
                 <img className='avatar'src={avatar} alt='avatar'/>
-                <UserDetails user={this.props.user} />
-                <Content content={this.props.content} />
+                <UserDetails user={user}
+                    date={date}
+                    postNumber={postNumber} />
+                <Content content={content} />
             </div>
         );
     }
@@ -113,10 +126,28 @@ class Post extends React.Component {
 
 class UserDetails extends React.Component {
     render() {
+        const {user, date, postNumber} = this.props;
         return (
             <div className='UserDetails'>
-                
-                <h4>{this.props.user}</h4>
+                <div className='header'>
+                    <div className='username'>{user.username}</div>
+                    <div class='postNumber' id={postNumber}>#{
+                        postNumber
+                    }</div>
+                    <div className='commentDate'>Posted on {
+                        new Date(date).toLocaleDateString(
+                            "en-UK",
+                            {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric'
+                            })
+                    }</div>
+                </div>
             </div>
         );
     }

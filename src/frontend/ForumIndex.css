@@ -1,13 +1,28 @@
+.ForumIndex .ThreadLink {
+  display: grid;
+  border: 1px solid darkgray;
+  background-color: whitesmoke;
+  margin: 10px;
+}
 
-  .ForumIndex .ThreadLink{
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      border: 1px solid darkgray;
-      background-color: whitesmoke;
-      height: 180px;
-      padding: 30px;
-      margin: 10px;
+.ForumIndex .ThreadLink .body {
+  padding: 15px;
+}
 
-  }
- 
+.ForumIndex .ThreadLink .footer {
+  font-size: 14px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 6% 47% 47%;
+  background: #eee;
+  text-align: left;
+  padding: 5px;
+}
+
+.ForumIndex .ThreadLink .footer .time {
+  opacity: 0.65;
+}
+
+.ForumIndex .ThreadLink .footer .lastPost {
+  text-align: right;
+}

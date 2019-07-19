@@ -7,7 +7,18 @@ const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
 
-let threads = getThreads();
+let threads = getThreads().map(thread => {
+    thread.posts = thread.posts.map((post, i) => {
+        post = {
+            ...post,
+            date: Date.now()
+                - (thread.posts.length - i) * 10000
+                + Math.floor(Math.random() * Math.floor(9999))
+        };
+        return post;
+    })
+    return thread;
+});
 
 app.get('/refresh-session', (_req, res) => {
     res.end(JSON.stringify({
@@ -24,6 +35,14 @@ app.get('/rest/thread/:threadNumber', (req, res) => {
         '/rest/thread/:threadNumber'
     )
 });
+
+app.get('/rest/forumIndex', (_req, res) => {
+    res.end(JSON.stringify(threads.map(thread => ({
+        title: thread.title,
+        firstPost: thread.posts[0],
+        lastPost: thread.posts[thread.posts.length - 1]
+    }))));
+})
 
 app.get('/rest/threads', (_req, res) => {
     res.end(JSON.stringify(threads));
@@ -47,12 +66,7 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
         {
             title: req.body.title,
             number: threads.length,
-            posts: [{
-                user: {
-                    username: 'Guest'
-                },
-                content: req.body.comment
-            }]
+            posts: [new Post('Guest', req.body.comment, Date.now())]
         }
     );
     res.end(JSON.stringify({
@@ -68,12 +82,7 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     handleThreadRequest(req.params.threadNumber,
         res,
         thread => {
-            const newPost = {
-                user: {
-                    username: 'Guest'
-                },
-                content: post
-            };
+            const newPost = new Post('Guest', post, Date.now());
             thread.posts.push(newPost);
             console.log("Created new post: ", newPost);
             res.end(JSON.stringify({
@@ -112,5 +121,13 @@ function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoi
                 message: `Thread ${threadNumber} does not exist!`
             }));
         }
+    }
+}
+
+class Post {
+    constructor(username, content, date) {
+        this.user = { username };
+        this.content = content;
+        this.date = date;
     }
 }
