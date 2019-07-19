@@ -7,7 +7,18 @@ const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
 
-let threads = getThreads();
+let threads = getThreads().map(thread => {
+    thread.posts = thread.posts.map((post, i) => {
+        post = {
+            ...post,
+            date: Date.now()
+                - (thread.posts.length - i) * 10000
+                + Math.floor(Math.random() * Math.floor(9999))
+        };
+        return post;
+    })
+    return thread;
+});
 
 app.get('/refresh-session', (_req, res) => {
     res.end(JSON.stringify({
@@ -51,6 +62,7 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
                 user: {
                     username: 'Guest'
                 },
+                date: Date.now(),
                 content: req.body.comment
             }]
         }
