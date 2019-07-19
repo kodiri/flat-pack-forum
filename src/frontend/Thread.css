@@ -33,12 +33,44 @@
   opacity: 0.65;
 }
 
+.Thread .UserDetails .user.identifier {
+  background: blue;
+  border: 1px solid rgba(0, 0, 133, 0.75);
+}
+
+.Thread .UserDetails .guest.identifier {
+  background: rgb(0, 133, 0);
+  border: 1px solid rgba(0, 0, 133, 0.75);
+}
+
+.Thread .UserDetails .admin.identifier {
+  background: rgb(255, 0, 0);
+  border: 1px solid rgba(133, 0, 0, 0.75);
+}
+
+.Thread .UserDetails .identifier {
+  font-size: 12px;
+  padding: 1px;
+  color: white;
+}
+
+.Thread .UserDetails .username {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.Thread .UserDetails .identifier, .Thread .UserDetails .username {
+  display: inline;
+}
+
 .Thread .UserDetails .postNumber {
   text-align: right;
 }
 
 .Thread .Content {
   grid-area: Content;
+  text-align: left;
+  padding-left: 10px;
   font-size: 15px;
 }
 

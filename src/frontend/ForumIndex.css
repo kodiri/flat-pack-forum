@@ -7,9 +7,10 @@
 
 .ForumIndex .ThreadLink .body {
   padding: 15px;
+  text-align: left;
 }
 
-.ForumIndex .ThreadLink .footer {
+.ForumIndex .ThreadLink .threadDetails {
   font-size: 14px;
   flex-grow: 1;
   display: grid;
@@ -19,10 +20,35 @@
   padding: 5px;
 }
 
-.ForumIndex .ThreadLink .footer .time {
+.ForumIndex .ThreadLink .threadDetails .guest.identifier {
+  background: rgb(0, 133, 0);
+  border: 1px solid rgba(0, 0, 133, 0.75);
+}
+
+.ForumIndex .ThreadLink .threadDetails .user.identifier {
+  background: blue;
+  border: 1px solid rgba(0, 0, 133, 0.75);
+}
+
+.ForumIndex .ThreadLink .threadDetails .admin.identifier {
+  background: rgb(255, 0, 0);
+  border: 1px solid rgba(133, 0, 0, 0.75);
+}
+
+.ForumIndex .ThreadLink .threadDetails .identifier {
+  font-size: 12px;
+  padding: 1px;
+  color: white;
+}
+
+.ForumIndex .ThreadLink .threadDetails .identifier, .ForumIndex .ThreadLink .threadDetails .username {
+  display: inline;
+}
+
+.ForumIndex .ThreadLink .threadDetails .time {
   opacity: 0.65;
 }
 
-.ForumIndex .ThreadLink .footer .lastPost {
+.ForumIndex .ThreadLink .threadDetails .lastPost {
   text-align: right;
 }

@@ -11,6 +11,10 @@ let threads = getThreads().map(thread => {
     thread.posts = thread.posts.map((post, i) => {
         post = {
             ...post,
+            user: {
+                ...post.user,
+                userType: post.user.username === 'Admin' ? 'Admin' : 'User'
+            },
             date: Date.now()
                 - (thread.posts.length - i) * 10000
                 + Math.floor(Math.random() * Math.floor(9999))
@@ -66,7 +70,7 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
         {
             title: req.body.title,
             number: threads.length,
-            posts: [new Post('Guest', req.body.comment, Date.now())]
+            posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
         }
     );
     res.end(JSON.stringify({
@@ -82,7 +86,7 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     handleThreadRequest(req.params.threadNumber,
         res,
         thread => {
-            const newPost = new Post('Guest', post, Date.now());
+            const newPost = new Post('Guest', 'Guest', post, Date.now());
             thread.posts.push(newPost);
             console.log("Created new post: ", newPost);
             res.end(JSON.stringify({
@@ -125,8 +129,8 @@ function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoi
 }
 
 class Post {
-    constructor(username, content, date) {
-        this.user = { username };
+    constructor(username, usertype, content, date) {
+        this.user = { username, usertype };
         this.content = content;
         this.date = date;
     }
