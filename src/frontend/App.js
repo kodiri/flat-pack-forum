@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import ForumIndex from './ForumIndex';
-import SubmitThread from './SubmitThread';
+import CreateThread from './CreateThread';
 import Thread from './Thread';
 import SignIn from './authentication/SignIn';
 import Header from './common/Header';
@@ -28,7 +28,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={ForumIndex} />
           <Route exact path='/index' component={ForumIndex} />
-          <Route exact path='/submit' component={SubmitThread} />
+          <Route exact path='/createThread' component={CreateThread} />
           <Route exact path='/thread/:number' component={Thread} />
           <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/not-found' component={NotFound} />

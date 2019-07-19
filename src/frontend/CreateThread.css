@@ -1,0 +1,32 @@
+.CreateThread {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.CreateThread .threadComment {
+    margin-top: 1000px;
+}
+
+.CreateThread .item {
+    margin: 10px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: pink;
+}
+
+.CreateThread .item label {
+    background: green;
+}
+
+.CreateThread textarea {
+    width: 250px;
+    height: 250px;
+}
+
+.CreateThread input {
+    width: 500px;
+}

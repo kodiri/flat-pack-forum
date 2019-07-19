@@ -34,7 +34,7 @@ body {
   grid-area: SideBar;
 }
 
-.ForumIndex, .Thread, .SignIn, .SubmitThread, #NotFound{
+.ForumIndex, .Thread, .SignIn, .CreateThread, #NotFound{
   grid-area: MainContent;
 }
 

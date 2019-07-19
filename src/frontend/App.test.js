@@ -5,7 +5,7 @@ import ForumIndex from './ForumIndex';
 import { mount } from 'enzyme';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import SubmitThread from './SubmitThread';
+import CreateThread from './CreateThread';
 import NotFound from './common/NotFound';
 import SignIn from './authentication/SignIn';
 import Thread from './Thread';
@@ -23,7 +23,7 @@ configure({ adapter: new Adapter() });
         notFoundExists: false
     }
 }, {
-    it: 'App shows SubmitThread page when the current path is "/submit"',
+    it: 'App shows CreateThread page when the current path is "/submit"',
     currentPath: ['/submit'],
     expect: {
         forumIndexExists: false,
@@ -77,7 +77,7 @@ configure({ adapter: new Adapter() });
             notFoundExists } = scenario.expect;
         expect(wrapper.find(ForumIndex).exists())
             .toEqual(forumIndexExists);
-        expect(wrapper.find(SubmitThread).exists())
+        expect(wrapper.find(CreateThread).exists())
             .toEqual(submitThreadExists);
         expect(wrapper.find(Thread).exists())
             .toEqual(threadExists);
