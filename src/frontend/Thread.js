@@ -131,7 +131,7 @@ class UserDetails extends React.Component {
             <div className='UserDetails'>
                 <div className='header'>
                     <div>{formatUser(user)}</div>
-                    <div class='postNumber' id={postNumber}>#{
+                    <div className='postNumber' id={postNumber}>#{
                         postNumber
                     }</div>
                     <div className='commentDate'>Posted on {

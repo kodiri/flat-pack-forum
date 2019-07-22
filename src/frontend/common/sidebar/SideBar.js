@@ -24,9 +24,9 @@ export default class SideBar extends React.Component {
                         linkName='Forum Index'
                         onClick={() => toggleSideBarVisibility()} />
                     <NavigationBarLink
-                        to='/submit'
-                        iconName='submitThreadBlackIcon'
-                        linkName='Submit Thread'
+                        to='/createThread'
+                        iconName='createThreadBlackIcon'
+                        linkName='Create Thread'
                         onClick={() => toggleSideBarVisibility()} />
                 </ul>
             </aside>

@@ -66,16 +66,19 @@ app.get('/rest/posts/:threadNumber', (req, res) => {
 
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
     console.log("Submit Thread request received");
+    const threadNumber = threads.length;
     threads.push(
         {
             title: req.body.title,
-            number: threads.length,
+            number: threadNumber,
             posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
         }
     );
     res.end(JSON.stringify({
         result: true,
-        message: "Successfully submitted thread to the backend!"
+        message: `Successfully submitted thread to the backend! The thread is ` 
+            + `available at threadNumber: ${threadNumber}`,
+        threadNumber
     }));
 });
 
