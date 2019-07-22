@@ -101,13 +101,19 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
 });
 
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
+    const username = req.body.username;
     const post = req.body.post;
     console.log(`Submit Post request received on Thread ` + 
         `<${req.params.threadNumber}> Post: <${post}>`);
     handleThreadRequest(req.params.threadNumber,
         res,
         thread => {
-            const newPost = new Post('Guest', 'Guest', post, Date.now());
+            const newPost = new Post(
+                (username || 'Guest'), 
+                'Guest', 
+                post, 
+                Date.now()
+            );
             thread.posts.push(newPost);
             console.log("Created new post: ", newPost);
             res.end(JSON.stringify({
@@ -171,8 +177,8 @@ function handleWildcardNum(requestedNum, res, handleSuccess, endpoint) {
 }
 
 class Post {
-    constructor(username, usertype, content, date) {
-        this.user = { username, usertype };
+    constructor(username, userType, content, date) {
+        this.user = { username, userType };
         this.content = content;
         this.date = date;
     }
