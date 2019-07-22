@@ -1,3 +1,4 @@
+const getUsers = require('./users');
 const getThreads = require('./threads');
 const express = require('express');
 const app = express();
@@ -6,6 +7,10 @@ const jsonParser = bodyParser.json();
 const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
+
+let users = getUsers().map(user => {
+    return { ...user, joinDate: Date.now(), lastActive: Date.now() };
+});
 
 let threads = getThreads().map(thread => {
     thread.posts = thread.posts.map((post, i) => {
@@ -64,6 +69,19 @@ app.get('/rest/posts/:threadNumber', (req, res) => {
         '/rest/posts/:threadNumber');
 })
 
+app.get('/rest/users', (_req, res) => {
+    res.end(JSON.stringify(users));
+})
+
+app.get('/rest/user/:uuid', (req, res) => {
+    const uuid = req.params.uuid;
+    console.log(`Received GET request for User ${uuid} on /rest/user/${uuid}`);
+    handleUserRequest(uuid,
+        res,
+        user => res.end(JSON.stringify(user)),
+        '/rest/user/:uuid');
+})
+
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
     console.log("Submit Thread request received");
     const threadNumber = threads.length;
@@ -112,22 +130,43 @@ app.listen(port, () => console.log(`Flatpack Express Backend ` +
     `now listening on port ${port}!`));
 
 function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoint') {
-    const threadNumber = parseInt(requestedNum);
-    if (threadNumber.toString() !== requestedNum) {
-        res.end(JSON.stringify({
-            result: false,
-            message: `Invalid URL, ${endpoint} requires an Integer`
-        }));
-    } else {
+    handleWildcardNum(requestedNum, res, threadNumber => {
         const thread = threads.find(thread => thread.number === threadNumber);
         if (thread) {
             handleThread(thread);
         } else {
             res.end(JSON.stringify({
                 result: false,
-                message: `Thread ${threadNumber} does not exist!`
+                message: `Thread ThreadNumber: ${threadNumber} does not exist!`
             }));
         }
+    }, endpoint);
+}
+
+function handleUserRequest(requestedNum, res, handleUser, endpoint = 'endpoint') {
+    handleWildcardNum(requestedNum, res, uuid => {
+        const user = users.find(user => user.uuid === uuid);
+        if (user) {
+            handleUser(user);
+        } else {
+            res.end(JSON.stringify({
+                result: false,
+                message: `User uuid: ${uuid} does not exist!`
+            }));
+        }
+    }, endpoint);
+}
+
+function handleWildcardNum(requestedNum, res, handleSuccess, endpoint) {
+    const number = parseInt(requestedNum);
+    if (number.toString() !== requestedNum) {
+        res.end(JSON.stringify({
+            result: false,
+            message: `Invalid URL particle: '${requestedNum}', ` +
+                `${endpoint} requires an Integer`
+        }));
+    } else {
+        handleSuccess(number);
     }
 }
 
