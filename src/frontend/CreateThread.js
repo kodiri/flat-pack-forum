@@ -13,20 +13,28 @@ class CreateThread extends React.Component {
     }
 
     handleClick = () => {
-        fetch('/rest/submit-thread', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: this.state.threadTitle,
-                comment: this.state.threadComment
-            })
-        }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
-            if (res.threadNumber) {
-                this.props.history.push(`/thread/${res.threadNumber}`);
-            } else {
-                console.log('Error: Thread could not be created!');
-            }
-        });
+        if (this.validateRequest()) {
+            fetch('/rest/submit-thread', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: this.state.threadTitle,
+                    comment: this.state.threadComment
+                })
+            }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
+                if (res.hasOwnProperty('threadNumber')) {
+                    this.props.history.push(`/thread/${res.threadNumber}`);
+                } else {
+                    console.log('Error: Thread could not be created!');
+                }
+            });
+        }
+    }
+
+    validateRequest() {
+        // Check whether the input and/or textareas are empty/invalid
+        // if it isn't, give the user an appropriate error message
+        return true;
     }
 
     textHandler = event => {
