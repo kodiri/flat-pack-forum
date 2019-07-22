@@ -1,5 +1,6 @@
 const getUsers = require('./users');
 const getThreads = require('./threads');
+const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -28,6 +29,8 @@ let threads = getThreads().map(thread => {
     })
     return thread;
 });
+
+app.use(sessionStore());
 
 app.get('/refresh-session', (_req, res) => {
     res.end(JSON.stringify({
@@ -119,6 +122,16 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
         },
         '/rest/submit-post/:threadNumber'
     );
+});
+
+app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
+    req.session.loggedIn = true;
+    const username = '';
+    console.log(req.session);
+    res.end(JSON.stringify({
+        result: true,
+        message: `Successfully signed in as user ${username}`
+    }));
 });
 
 app.use(express.static(path.join(__dirname, buildPath)));
