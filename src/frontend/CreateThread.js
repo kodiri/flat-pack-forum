@@ -1,8 +1,9 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import './CreateThread.css';
 
-export default class CreateThread extends React.Component {
+class CreateThread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +21,11 @@ export default class CreateThread extends React.Component {
                 comment: this.state.threadComment
             })
         }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
-            
+            if (res.threadNumber) {
+                this.props.history.push(`/thread/${res.threadNumber}`);
+            } else {
+                console.log('Error: Thread could not be created!');
+            }
         });
     }
 
@@ -35,7 +40,7 @@ export default class CreateThread extends React.Component {
             <div className='CreateThread'>
                 <h1>Create a new thread!</h1>
                 <div className='threadTitle item'>
-                    <label forHtml='threadTitle'>Title:</label>
+                    <label htmlFor='threadTitle'>Title:</label>
                     <input name='threadTitle'
                         type='text'
                         placeholder='enter the title'
@@ -43,14 +48,20 @@ export default class CreateThread extends React.Component {
                         onChange={this.textHandler} />
                 </div>
                 <div className='threadComment item'>
-                    <label forHtml='threadComment'>First Comment:</label>
+                    <label htmlFor='threadComment'>First Comment:</label>
                     <textarea name='threadComment'
                         placeholder='enter the comment'
                         value={this.state.threadComment}
                         onChange={this.textHandler} />
                 </div>
-                <button onClick={this.handleClick} className='item' type='submit' value='SUBMIT'>Create Thread!</button>
+                <button onClick={this.handleClick}
+                    className='item'
+                    type='submit'
+                    value='SUBMIT'
+                >Create Thread!</button>
             </div>
         );
     }
 }
+
+export default withRouter(CreateThread);
