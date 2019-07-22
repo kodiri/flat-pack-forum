@@ -55,16 +55,18 @@ class SubmitPost extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '',
             post: '',
             enableSubmit: false
         };
     }
 
-    handleTA = event => {
-        const post = event.target.value;
+    handleText = event => {
+        const name = event.target.name;
+        const value = event.target.value;
         this.setState(() => ({
-            post,
-            enableSubmit: post.length > 0
+            [name] : value,
+            enableSubmit: [name].length > 0
         }));
     }
 
@@ -73,7 +75,8 @@ class SubmitPost extends React.Component {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                post: this.state.post
+                post: this.state.post,
+                username: this.state.username
             })
         }).then(res => {
             return res.ok ? res.json() : Promise.reject();
@@ -88,6 +91,7 @@ class SubmitPost extends React.Component {
         });
         this.setState(() => ({
             post: '',
+            username: '',
             enableSubmit: false
         }));
     }
@@ -95,7 +99,14 @@ class SubmitPost extends React.Component {
     render() {
         return (
             <div className='SubmitPost'>
-                <textarea onChange={this.handleTA}
+                <input type='text'
+                    name='username' 
+                    onChange={this.handleText}
+                    placeholder='Please enter your username.'
+                    value={this.state.username}                     
+                    className='username'  />
+                <textarea name='post'
+                    onChange={this.handleText}
                     placeholder='Type your post here!'
                     value={this.state.post}
                     className='submitNewPost' />
@@ -104,9 +115,10 @@ class SubmitPost extends React.Component {
                     value='Post'
                     onClick={this.submitPost}
                     className='submitButton' />
-            </div>
+             </div>
         );
     }
+
 }
 
 class Post extends React.Component {
@@ -164,6 +176,7 @@ class Content extends React.Component {
 }
 
 function formatUser(user) {
+    console.log("User being formatted: ", user);
     switch (user.userType) {
         case 'Guest':
             return (<>
