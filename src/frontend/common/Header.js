@@ -1,5 +1,5 @@
 import React from 'react';
-import NavigationBarLink from './NavigationBarLink';
+import SearchBar from './SearchBar';
 
 import './Header.css';
 
@@ -10,13 +10,8 @@ export default function Header() {
                 <img src={require('./images/flat-pack-forum.png')} alt='Flat Pack Forum logo' />
                 Flat-Pack-Forum
         </a>
-        <div className='middle item'>
-        </div>
-        <div className='signIn item'>
-            <NavigationBarLink
-                to='/signIn' 
-                iconName='signInBlackIcon'
-                linkName='Sign In' />
-        </div>
+        <SearchBar className='item' />
+      
+        
     </header>);
 }

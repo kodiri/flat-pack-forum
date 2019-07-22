@@ -1,0 +1,16 @@
+.SearchBar {
+    background: pink;
+    position: relative;
+}
+
+.SearchBar input {
+    width: 100%;
+}
+
+.SearchBar .searchResults {
+    background: green;
+    position: absolute;
+    overflow-x: hidden;
+    width: 100%;
+    z-index: 1;
+}

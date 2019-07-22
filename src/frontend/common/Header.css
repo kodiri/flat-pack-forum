@@ -1,4 +1,4 @@
-.Header, .Header .NavigationBarLink {
+.Header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -12,16 +12,6 @@
 
 .Header .item {
     flex-grow: 1;
-}
-
-.Header .signIn a {
-    float: right;
-    text-decoration: none;
-    color: white;
-}
-
-.Header .signIn .icon {
-    padding-right: 5px;
 }
 
 .Header .title {

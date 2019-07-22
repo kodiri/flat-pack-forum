@@ -28,6 +28,11 @@ export default class SideBar extends React.Component {
                         iconName='createThreadBlackIcon'
                         linkName='Create Thread'
                         onClick={() => toggleSideBarVisibility()} />
+                    <NavigationBarLink
+                        to='/signIn' 
+                        iconName='signInBlackIcon'
+                        linkName='Sign In' />
+       
                 </ul>
             </aside>
             <SideBarIcon />
