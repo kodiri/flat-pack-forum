@@ -6,27 +6,45 @@
     height: 100%;
 }
 
-.CreateThread .threadComment {
-    margin-top: 1000px;
-}
-
 .CreateThread .item {
+    width: 50%;
     margin: 10px;
     text-align: center;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    background: pink;
+    grid-template-rows: 0.1fr 1fr;
+    padding: 10px;
+    background: white;
 }
 
 .CreateThread .item label {
-    background: green;
+    background: #f7f9fc;
+    border: 1px solid #eee;
+    padding: 5px;
 }
 
-.CreateThread textarea {
-    width: 250px;
+.CreateThread .item input {
+    font-size: 20px;
+}
+
+.CreateThread .item textarea {
+    font-size: 16px;
+    font-family: inherit;
     height: 250px;
 }
 
-.CreateThread input {
-    width: 500px;
+.CreateThread .item input, .CreateThread .item textarea {
+    border: 1px solid #eee;
+    width: 100%;
+}
+
+.CreateThread button[type='submit'] {
+    display: initial;
+    font-size: 24px;
+    cursor: pointer;
+    border: 2px solid rgb(116, 114, 148);
+    transition: border cubic-bezier(0.26, 0.15, 0.46, 1) 0.1s;
+}
+
+.CreateThread button[type='submit']:hover {
+    border: 2px solid rgb(210, 209, 247);
 }

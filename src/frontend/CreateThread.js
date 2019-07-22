@@ -42,7 +42,7 @@ export default class CreateThread extends React.Component {
                         value={this.state.threadTitle}
                         onChange={this.textHandler} />
                 </div>
-                <div classname='threadComment item'>
+                <div className='threadComment item'>
                     <label forHtml='threadComment'>First Comment:</label>
                     <textarea name='threadComment'
                         placeholder='enter the comment'
