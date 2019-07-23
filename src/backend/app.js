@@ -1,6 +1,6 @@
 const getUsers = require('./users');
 const getThreads = require('./threads');
-const throttle60s = require('./spamChecker').default;
+const throttle60s = require('./spamChecker');
 const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
