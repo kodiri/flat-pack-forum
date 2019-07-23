@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const jwt = require('jwt-simple');
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
@@ -136,7 +138,19 @@ app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
     console.log(req.session);
     res.end(JSON.stringify({
         result: true,
-        message: `Successfully signed in as user ${username}`
+        message: `Successfully signed in as user ${username} with standard method`
+    }));
+});
+
+app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
+    const id_token = req.headers['authorization'].replace('Bearer ', '');
+    // fetch();
+    // console.log(jwt.decode(req.headers['authorization'].replace('Bearer ', ''), GOOGLE_CLIENT_SECRET));
+    console.log(req.session);
+    const username = '';
+    res.end(JSON.stringify({
+        result: true,
+        message: `Successfully signed in as user ${username} with Google SignIn`
     }));
 });
 
