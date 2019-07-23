@@ -54,6 +54,7 @@ app.get('/rest/thread/:threadNumber', (req, res) => {
 app.get('/rest/forumIndex', (_req, res) => {
     res.end(JSON.stringify(threads.map(thread => ({
         title: thread.title,
+        number: thread.number,
         firstPost: thread.posts[0],
         lastPost: thread.posts[thread.posts.length - 1]
     }))));
