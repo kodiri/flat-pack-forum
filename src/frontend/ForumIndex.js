@@ -16,19 +16,24 @@ export default class ForumIndex extends React.Component {
             return res.ok ? res.json() : Promise.reject();
         }).then(threadLinks => {
             this.setState({
-                threadLinks: threadLinks.map(({
+                threadLinks: this.sortThreads(threadLinks).map(({
                     title,
+                    number,
                     firstPost,
                     lastPost
                 }, i) => {
                     return <ThreadLink key={i}
-                        num={i}
+                        num={number}
                         title={title}
                         firstPost={firstPost}
                         lastPost={lastPost} />
                 })
             });
         });
+    }
+
+    sortThreads(threadLinks) {
+        return threadLinks.sort((firstThread, secondThread) => secondThread.lastPost.date - firstThread.lastPost.date);
     }
 
     render() {
