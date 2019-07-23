@@ -18,10 +18,6 @@
     padding: 0px;
     grid-area: username;
     font-size: 50px;
-    /* text-align: center;
-    /* justify-self: center; 
-    align-self: center;
-    border: solid red; */
     align-self: start;
 }
 

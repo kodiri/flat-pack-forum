@@ -31,10 +31,10 @@ class App extends React.Component {
           <Route exact path='/index' component={ForumIndex} />
           <Route exact path='/createThread' component={CreateThread} />
           <Route exact path='/thread/:number' component={Thread} />
-          <Route exact path='/user/:number' component={UserProfile}/>
+          <Route exact path='/user/:number' component={UserProfile} />
           <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/not-found' component={NotFound} />
-          <Route path='/:invalid' component={NotFound} />  
+          <Route path='/:invalid' component={NotFound} />
         </Switch>
         <SideBar />
         <Footer />
