@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ForumIndex from './ForumIndex';
 import CreateThread from './CreateThread';
 import Thread from './Thread';
+import UserProfile from './UserProfile';
 import SignIn from './authentication/SignIn';
 import Header from './common/Header';
 import SideBar from './common/sidebar/SideBar';
@@ -30,6 +31,7 @@ class App extends React.Component {
           <Route exact path='/index' component={ForumIndex} />
           <Route exact path='/createThread' component={CreateThread} />
           <Route exact path='/thread/:number' component={Thread} />
+          <Route exact path='/user/:number' component={UserProfile} />
           <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
