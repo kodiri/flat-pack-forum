@@ -1,5 +1,6 @@
 const getUsers = require('./users');
 const getThreads = require('./threads');
+const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -28,6 +29,8 @@ let threads = getThreads().map(thread => {
     })
     return thread;
 });
+
+app.use(sessionStore());
 
 app.get('/refresh-session', (_req, res) => {
     res.end(JSON.stringify({
@@ -101,13 +104,19 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
 });
 
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
+    const username = req.body.username;
     const post = req.body.post;
     console.log(`Submit Post request received on Thread ` + 
         `<${req.params.threadNumber}> Post: <${post}>`);
     handleThreadRequest(req.params.threadNumber,
         res,
         thread => {
-            const newPost = new Post('Guest', 'Guest', post, Date.now());
+            const newPost = new Post(
+                (username || 'Guest'), 
+                'Guest', 
+                post, 
+                Date.now()
+            );
             thread.posts.push(newPost);
             console.log("Created new post: ", newPost);
             res.end(JSON.stringify({
@@ -119,6 +128,16 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
         },
         '/rest/submit-post/:threadNumber'
     );
+});
+
+app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
+    req.session.loggedIn = true;
+    const username = '';
+    console.log(req.session);
+    res.end(JSON.stringify({
+        result: true,
+        message: `Successfully signed in as user ${username}`
+    }));
 });
 
 app.use(express.static(path.join(__dirname, buildPath)));
@@ -171,8 +190,8 @@ function handleWildcardNum(requestedNum, res, handleSuccess, endpoint) {
 }
 
 class Post {
-    constructor(username, usertype, content, date) {
-        this.user = { username, usertype };
+    constructor(username, userType, content, date) {
+        this.user = { username, userType };
         this.content = content;
         this.date = date;
     }
