@@ -1,5 +1,6 @@
 const getUsers = require('./users');
 const getThreads = require('./threads');
+const throttle60s = require('./spamChecker');
 const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
@@ -54,7 +55,7 @@ app.get('/rest/forumIndex', (_req, res) => {
         firstPost: thread.posts[0],
         lastPost: thread.posts[thread.posts.length - 1]
     }))));
-})
+});
 
 app.get('/rest/threads', (_req, res) => {
     res.end(JSON.stringify(threads));
@@ -70,11 +71,11 @@ app.get('/rest/posts/:threadNumber', (req, res) => {
         res,
         thread => res.end(JSON.stringify(thread.posts)),
         '/rest/posts/:threadNumber');
-})
+});
 
 app.get('/rest/users', (_req, res) => {
     res.end(JSON.stringify(users));
-})
+});
 
 app.get('/rest/user/:uuid', (req, res) => {
     const uuid = req.params.uuid;
@@ -83,24 +84,28 @@ app.get('/rest/user/:uuid', (req, res) => {
         res,
         user => res.end(JSON.stringify(user)),
         '/rest/user/:uuid');
-})
+});
 
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
     console.log("Submit Thread request received");
-    const threadNumber = threads.length;
-    threads.push(
-        {
-            title: req.body.title,
-            number: threadNumber,
-            posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
-        }
-    );
-    res.end(JSON.stringify({
-        result: true,
-        message: `Successfully submitted thread to the backend! The thread is ` 
-            + `available at threadNumber: ${threadNumber}`,
-        threadNumber
-    }));
+    const ipAddress = req.ip;
+    throttle60s(ipAddress, res, () => {
+        const threadNumber = threads.length;
+        threads.push(
+            {
+                title: req.body.title,
+                number: threadNumber,
+                posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
+            }
+        );
+        res.end(JSON.stringify({
+            result: true,
+            message: `Successfully submitted thread to the backend! The thread is ` 
+                + `available at threadNumber: ${threadNumber}`,
+            threadNumber
+        }));
+        console.log(`Successfully created a thread from ipAddress: ${ipAddress}`);
+    });
 });
 
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
