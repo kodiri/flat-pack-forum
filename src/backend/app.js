@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const fetch = require('node-fetch');
 const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
@@ -101,7 +102,7 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
         );
         res.end(JSON.stringify({
             result: true,
-            message: `Successfully submitted thread to the backend! The thread is ` 
+            message: `Successfully submitted thread to the backend! The thread is `
                 + `available at threadNumber: ${threadNumber}`,
             threadNumber
         }));
@@ -112,15 +113,15 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     const username = req.body.username;
     const post = req.body.post;
-    console.log(`Submit Post request received on Thread ` + 
+    console.log(`Submit Post request received on Thread ` +
         `<${req.params.threadNumber}> Post: <${post}>`);
     handleThreadRequest(req.params.threadNumber,
         res,
         thread => {
             const newPost = new Post(
-                (username || 'Guest'), 
-                'Guest', 
-                post, 
+                (username || 'Guest'),
+                'Guest',
+                post,
                 Date.now()
             );
             thread.posts.push(newPost);
@@ -142,8 +143,39 @@ app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
     console.log(req.session);
     res.end(JSON.stringify({
         result: true,
-        message: `Successfully signed in as user ${username}`
+        message: `Successfully signed in as user ${username} with standard method`
     }));
+});
+
+app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
+    const authorizationHeader = req.headers['authorization'];
+    const id_token = authorizationHeader && authorizationHeader.replace('Bearer ', '');
+    if (id_token) {
+        fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`).then(res => {
+            return res.ok ? res.json() : Promise.reject();
+        }).then(googleRes => {
+            console.log("Decoded token: ", googleRes);
+            req.session.loggedIn = true;
+            const { name, email, email_verified } = googleRes;
+            req.session.googleAccount = { name, email, email_verified };
+            console.log(req.session);
+            const username = '';
+            res.end(JSON.stringify({
+                result: true,
+                message: `Successfully signed in as user ${username} with Google SignIn`
+            }));
+        }).catch(error => {
+            res.end(JSON.stringify({
+                result: false,
+                message: `Failed to authenticate ID with Google, ${error}`
+            }));
+        });
+    } else {
+        res.end(JSON.stringify({
+            result: false,
+            message: `Authorization Headers were not sent to the backend!`
+        }));
+    }
 });
 
 app.use(express.static(path.join(__dirname, buildPath)));
@@ -151,7 +183,7 @@ app.get('*', (_req, res) => {
     res.sendFile(path.join(__dirname, buildPath, 'index.html'));
 });
 
-app.listen(port, () => console.log(`Flatpack Express Backend ` + 
+app.listen(port, () => console.log(`Flatpack Express Backend ` +
     `now listening on port ${port}!`));
 
 function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoint') {
