@@ -2,8 +2,6 @@ import React from 'react';
 import GoogleSignIn from 'react-google-login';
 
 import './SignIn.css';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const jwt = require('jwt-simple');
 
 export default class SignIn extends React.Component {
     handleGoogleSignIn = res => {
@@ -16,14 +14,7 @@ export default class SignIn extends React.Component {
             },
         }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
             console.log(res);
-        })
-        console.log(GOOGLE_CLIENT_SECRET);
-        console.log(jwt.decode(id_token))
-        // fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${id_token}`).then(res => {
-        //     return res.ok ? res.json() : Promise.reject();
-        // }).then(res => {
-        //     console.log("Decoded token: ", res);
-        // })
+        });
     }
 
     render() {
@@ -35,6 +26,7 @@ export default class SignIn extends React.Component {
             <label htmlFor='password'>Password:</label>
             <input name='password' type='password' />
 
+            <div>OR</div>
             <GoogleSignIn
                 clientId='407818662698-mdsp622g5v0hmi7dsdqp2drvraebgnj4.apps.googleusercontent.com'
                 buttonText='Sign In with Google!'
