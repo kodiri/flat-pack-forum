@@ -7,7 +7,7 @@ export default class SignUp extends React.Component {
     render() {
         return (
             <div className='SignUp'>
-                <div className='title'>Welcome to the SignUp page!</div>
+                <div className='title'>Welcome to the Sign Up page!</div>
                 <div>Please enter your details here:</div>
                 <label htmlFor='username'>Username:</label>
                 <input name='username' type='text' />

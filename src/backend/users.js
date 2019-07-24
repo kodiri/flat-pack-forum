@@ -98,7 +98,7 @@ function getUsers() {  // Backend's TEMPORARY array of Users
         ),
         new User(
             'Admin',
-            'User',
+            'Admin',
             12,
             'Admin@some.email.address.com',
             'UK'

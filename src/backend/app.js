@@ -11,9 +11,7 @@ const path = require('path');
 const buildPath = '../../build';
 const port = process.env.PORT || 3001;
 
-let users = getUsers().map(user => {
-    return { ...user, joinDate: Date.now(), lastActive: Date.now() };
-});
+let users = getUsers();
 
 let threads = getThreads().map(thread => {
     thread.posts = thread.posts.map((post, i) => {
@@ -166,11 +164,12 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
                     'User',
                     users.length,
                     email,
+                    'N/A',
                     Date.now(),
-                    Date.now(),
-                    'N/A'
+                    Date.now()
                 );
                 users.push(user);
+                console.log(users);
             }
             req.session.googleAccount = { name, email, email_verified };
             console.log(req.session);

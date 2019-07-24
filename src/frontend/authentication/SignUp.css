@@ -1,6 +1,6 @@
 .SignUp {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-row-gap: 10px;
     padding: 150px;
 }
 
