@@ -157,7 +157,6 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             console.log("Decoded token: ", googleRes);
             req.session.loggedIn = true;
             const { name, email, email_verified } = googleRes;
-<<<<<<< HEAD
             let user = users.find(user => user.email === email);
             if (user) {
                 user.lastActive = Date.now();
@@ -178,14 +177,6 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             res.end(JSON.stringify({
                 result: true,
                 message: `Successfully signed in as user ${name} with Google SignIn`
-=======
-            req.session.googleAccount = { name, email, email_verified };
-            console.log(req.session);
-            const username = '';
-            res.end(JSON.stringify({
-                result: true,
-                message: `Successfully signed in as user ${username} with Google SignIn`
->>>>>>> upstream/master
             }));
         }).catch(error => {
             res.end(JSON.stringify({
