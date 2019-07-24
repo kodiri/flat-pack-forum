@@ -1,0 +1,11 @@
+.SignUp {
+    display: flex;
+    flex-direction: column;
+    padding: 150px;
+}
+
+.SignUp .title {
+    padding-bottom: 40px;
+    font-size: 26px;
+    font-weight: 500;
+}
