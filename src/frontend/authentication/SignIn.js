@@ -1,22 +1,11 @@
 import React from 'react';
 import GoogleSignIn from 'react-google-login';
+import { handleGoogleSignIn, handleGoogleFailure } from './googleHandlers';
+import { withRouter } from 'react-router-dom';
 
 import './SignIn.css';
 
-export default class SignIn extends React.Component {
-    handleGoogleSignIn = res => {
-        const id_token = res.tokenObj.id_token;
-        console.log("And JWT token is: ", id_token);
-        fetch(`/rest/authenticate/sign-in/google`, {
-            method: 'post',
-            headers: {
-                'Authorization': 'Bearer ' + id_token
-            },
-        }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
-            console.log(res);
-        });
-    }
-
+class SignIn extends React.Component {
     render() {
         return (<div className='SignIn'>
             <div className='title'>Welcome to the Sign In page!</div>
@@ -30,8 +19,10 @@ export default class SignIn extends React.Component {
             <GoogleSignIn
                 clientId='407818662698-mdsp622g5v0hmi7dsdqp2drvraebgnj4.apps.googleusercontent.com'
                 buttonText='Sign In with Google!'
-                onSuccess={this.handleGoogleSignIn}
-                onFailure={this.handleGoogleSignIn} />
+                onSuccess={res => handleGoogleSignIn(res, this.props.history)}
+                onFailure={handleGoogleFailure} />
         </div>);
     }
 }
+
+export default withRouter(SignIn);
