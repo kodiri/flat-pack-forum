@@ -32,6 +32,10 @@ export default class SideBar extends React.Component {
                         to='/signIn' 
                         iconName='signInBlackIcon'
                         linkName='Sign In' />
+                    <NavigationBarLink
+                        to='/signUp' 
+                        iconName='signUpBlackIcon'
+                        linkName='Sign Up' />
        
                 </ul>
             </aside>

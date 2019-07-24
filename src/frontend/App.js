@@ -5,6 +5,7 @@ import CreateThread from './CreateThread';
 import Thread from './Thread';
 import UserProfile from './UserProfile';
 import SignIn from './authentication/SignIn';
+import SignUp from './authentication/SignUp';
 import Header from './common/Header';
 import SideBar from './common/sidebar/SideBar';
 import Footer from './common/Footer';
@@ -33,6 +34,7 @@ class App extends React.Component {
           <Route exact path='/thread/:number' component={Thread} />
           <Route exact path='/user/:number' component={UserProfile} />
           <Route exact path='/signIn' component={SignIn} />
+          <Route exact path='/signUp' component={SignUp} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>
