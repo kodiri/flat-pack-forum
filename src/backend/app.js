@@ -1,4 +1,4 @@
-const getUsers = require('./users');
+const { User, getUsers } = require('./users');
 const getThreads = require('./threads');
 const throttle60s = require('./spamChecker');
 const sessionStore = require('./sessionStore');
@@ -157,12 +157,26 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             console.log("Decoded token: ", googleRes);
             req.session.loggedIn = true;
             const { name, email, email_verified } = googleRes;
+            let user = users.find(user => user.email === email);
+            if (user) {
+                user.lastActive = Date.now();
+            } else {
+                user = new User(
+                    name,
+                    'User',
+                    users.length,
+                    email,
+                    Date.now(),
+                    Date.now(),
+                    'N/A'
+                );
+                users.push(user);
+            }
             req.session.googleAccount = { name, email, email_verified };
             console.log(req.session);
-            const username = '';
             res.end(JSON.stringify({
                 result: true,
-                message: `Successfully signed in as user ${username} with Google SignIn`
+                message: `Successfully signed in as user ${name} with Google SignIn`
             }));
         }).catch(error => {
             res.end(JSON.stringify({
