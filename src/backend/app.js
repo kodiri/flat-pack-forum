@@ -175,7 +175,8 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             console.log(req.session);
             res.end(JSON.stringify({
                 result: true,
-                message: `Successfully signed in as user ${name} with Google SignIn`
+                message: `Successfully signed in as user ${name} with Google SignIn`,
+                uuid: user.uuid
             }));
         }).catch(error => {
             res.end(JSON.stringify({
