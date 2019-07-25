@@ -17,7 +17,7 @@
 #UserProfile .username {
     padding: 0px;
     grid-area: username;
-    font-size: 50px;
+    font-size: 25px;
     align-self: start;
 }
 
