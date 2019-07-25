@@ -1,7 +1,6 @@
 import React from 'react';
 import GoogleSignIn from 'react-google-login';
 import { handleGoogleSignIn, handleGoogleFailure } from './googleHandlers';
-import { withRouter } from 'react-router-dom';
 
 import './SignIn.css';
 
@@ -19,10 +18,11 @@ class SignIn extends React.Component {
             <GoogleSignIn
                 clientId='407818662698-mdsp622g5v0hmi7dsdqp2drvraebgnj4.apps.googleusercontent.com'
                 buttonText='Sign In with Google!'
-                onSuccess={res => handleGoogleSignIn(res, this.props.history)}
+                onSuccess={res => handleGoogleSignIn(
+                    res, this.props.history, this.props.refreshSession)}
                 onFailure={handleGoogleFailure} />
         </div>);
     }
 }
 
-export default withRouter(SignIn);
+export default SignIn;

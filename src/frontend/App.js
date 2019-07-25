@@ -14,34 +14,55 @@ import NotFound from './common/NotFound';
 import './App.css';
 
 class App extends React.Component {
-  // An example fetch request
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clientInfo: undefined
+    };
+    this.refreshSession = this.refreshSession.bind(this);
+  }
+
+  refreshSession() {
     fetch('/refresh-session').then(res => {
       return res.ok ? res.json() : Promise.reject();
     }).then(res => {
       console.log(`Reponse from /refresh-session: ${JSON.stringify(res)}`);
+      if (res.hasOwnProperty('clientInfo')) {
+        this.setState({ clientInfo: res.clientInfo });
+      } else {
+        this.setState({ clientInfo: {} });
+      }
     });
   }
 
+  componentDidMount() {
+    this.refreshSession();
+  }
+
   render() {
-    return (
-      <div className="App">
+    let clientInfo = this.state.clientInfo;
+    return clientInfo ?
+      (<div className="App">
         <Header />
         <Switch>
           <Route exact path='/' component={ForumIndex} />
           <Route exact path='/index' component={ForumIndex} />
-          <Route exact path='/createThread' component={CreateThread} />
-          <Route exact path='/thread/:number' component={Thread} />
+          <Route exact path='/createThread' render={props =>
+            <CreateThread {...props} clientInfo={clientInfo} />} />
+          <Route exact path='/thread/:number' render={props =>
+            <Thread {...props} clientInfo={clientInfo} />} />
           <Route exact path='/user/:number' component={UserProfile} />
-          <Route exact path='/signIn' component={SignIn} />
-          <Route exact path='/signUp' component={SignUp} />
+          <Route exact path='/signIn' render={props =>
+            <SignIn {...props} refreshSession={this.refreshSession} />} />
+          <Route exact path='/signUp' render={props =>
+            <SignUp {...props} refreshSession={this.refreshSession} />} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>
-        <SideBar />
+        <SideBar clientInfo={clientInfo} />
         <Footer />
-      </div>
-    );
+      </div>) :
+      <></>;
   }
 }
 
