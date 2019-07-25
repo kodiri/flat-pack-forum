@@ -32,10 +32,17 @@ let threads = getThreads().map(thread => {
 
 app.use(sessionStore());
 
-app.get('/refresh-session', (_req, res) => {
+app.get('/refresh-session', (req, res) => {
+    const clientInfo = req.session.loggedIn ? 
+        {
+            ...req.session.clientInfo,
+            expires: req.session.cookie._expires
+        } :
+        {};
     res.end(JSON.stringify({
         result: true,
-        message: "Session refreshed!"
+        message: "Session refreshed!",
+        clientInfo
     }));
 });
 
@@ -135,6 +142,14 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     );
 });
 
+app.post('/rest/authenticate/sign-up', jsonParser, (_req, res) => {
+    console.log("Received request to sign up!");
+    res.end(JSON.stringify({
+        result: true,
+        message: `Successfully signed up user with standard method`
+    }));
+})
+
 app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
     req.session.loggedIn = true;
     const username = '';
@@ -171,7 +186,14 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
                 users.push(user);
                 console.log(users);
             }
-            req.session.googleAccount = { name, email, email_verified };
+            req.session.clientInfo = { 
+                signedIn: true,
+                name, 
+                email, 
+                email_verified,
+                googleAccount: true,
+                uuid: user.uuid
+            };
             console.log(req.session);
             res.end(JSON.stringify({
                 result: true,

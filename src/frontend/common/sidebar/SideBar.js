@@ -12,6 +12,7 @@ export default class SideBar extends React.Component {
                 sideBar.classList.remove('active');
             }
         });
+        console.log("Our ClientInfo on the SideBar is: ", this.props.clientInfo);
     }
 
     render() {
@@ -28,15 +29,28 @@ export default class SideBar extends React.Component {
                         iconName='createThreadBlackIcon'
                         linkName='Create Thread'
                         onClick={() => toggleSideBarVisibility()} />
-                    <NavigationBarLink
-                        to='/signIn' 
-                        iconName='signInBlackIcon'
-                        linkName='Sign In' />
-                    <NavigationBarLink
-                        to='/signUp' 
-                        iconName='signUpBlackIcon'
-                        linkName='Sign Up' />
-       
+                    { this.props.clientInfo.signedIn ? 
+                        <>
+                            <NavigationBarLink
+                                to={`/user/${this.props.clientInfo.uuid}`}
+                                iconName='profileBlackIcon'
+                                linkName='Profile' />
+                            <NavigationBarLink
+                                to='/signOut'
+                                iconName='signOutBlackIcon'
+                                linkName='Sign Out' />
+                        </> :
+                        <>
+                            <NavigationBarLink
+                                to='/signIn' 
+                                iconName='signInBlackIcon'
+                                linkName='Sign In' />
+                            <NavigationBarLink
+                                to='/signUp' 
+                                iconName='signUpBlackIcon'
+                                linkName='Sign Up' />
+                        </>
+                    }
                 </ul>
             </aside>
             <SideBarIcon />

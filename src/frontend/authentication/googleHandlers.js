@@ -1,4 +1,4 @@
-export const handleGoogleSignIn = (res, history) => {
+export const handleGoogleSignIn = (res, history, refreshSession) => {
     const id_token = res.tokenObj.id_token;
     console.log("And JWT token is: ", id_token);
     fetch(`/rest/authenticate/sign-in/google`, {
@@ -8,6 +8,7 @@ export const handleGoogleSignIn = (res, history) => {
         },
     }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
         console.log(res);
+        refreshSession();
         history.push(`/user/${res.uuid}`);
     });
 }
