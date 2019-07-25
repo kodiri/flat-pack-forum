@@ -33,7 +33,7 @@ let threads = getThreads().map(thread => {
 app.use(sessionStore());
 
 app.get('/refresh-session', (req, res) => {
-    const clientInfo = req.session.loggedIn ? 
+    const clientInfo = req.session.signedIn ?
         {
             ...req.session.clientInfo,
             expires: req.session.cookie._expires
@@ -116,7 +116,13 @@ app.post('/rest/submit-thread', jsonParser, (req, res) => {
 });
 
 app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
-    const username = req.body.username;
+    const { username, userType } = req.session.signedIn ? {
+        username: req.session.clientInfo.username,
+        userType: req.session.clientInfo.userType
+    } : {
+        username: req.body.username,
+        userType: 'Guest'
+    };
     const post = req.body.post;
     console.log(`Submit Post request received on Thread ` +
         `<${req.params.threadNumber}> Post: <${post}>`);
@@ -125,7 +131,7 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
         thread => {
             const newPost = new Post(
                 (username || 'Guest'),
-                'Guest',
+                userType,
                 post,
                 Date.now()
             );
@@ -151,7 +157,7 @@ app.post('/rest/authenticate/sign-up', jsonParser, (_req, res) => {
 })
 
 app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
-    req.session.loggedIn = true;
+    req.session.signedIn = true;
     const username = '';
     console.log(req.session);
     res.end(JSON.stringify({
@@ -168,7 +174,7 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then(googleRes => {
             console.log("Decoded token: ", googleRes);
-            req.session.loggedIn = true;
+            req.session.signedIn = true;
             const { name, email, email_verified } = googleRes;
             let user = users.find(user => user.email === email);
             if (user) {
@@ -186,10 +192,12 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
                 users.push(user);
                 console.log(users);
             }
-            req.session.clientInfo = { 
+            req.session.clientInfo = {
                 signedIn: true,
-                name, 
-                email, 
+                username: name,
+                userType: 'User',
+                name,
+                email,
                 email_verified,
                 googleAccount: true,
                 uuid: user.uuid

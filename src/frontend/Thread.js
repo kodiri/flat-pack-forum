@@ -45,7 +45,8 @@ export default class Thread extends React.Component {
                     })
                 }
                 <SubmitPost handleSubmit={this.handleSubmit}
-                    threadNumber={this.props.match.params.number} />
+                    threadNumber={this.props.match.params.number}
+                    clientInfo={this.props.clientInfo} />
             </div> :
             <Redirect to='/not-found' />;
     }
@@ -99,12 +100,14 @@ class SubmitPost extends React.Component {
     render() {
         return (
             <div className='SubmitPost'>
-                <input type='text'
-                    name='username' 
-                    onChange={this.handleText}
-                    placeholder='Please enter your username.'
-                    value={this.state.username}                     
-                    className='username'  />
+                { this.props.clientInfo.signedIn || 
+                    <input type='text'
+                        name='username' 
+                        onChange={this.handleText}
+                        placeholder='Please enter your username.'
+                        value={this.state.username}                     
+                        className='username'  />
+                }
                 <textarea name='post'
                     onChange={this.handleText}
                     placeholder='Type your post here!'
