@@ -38,7 +38,7 @@ app.get('/refresh-session', (req, res) => {
             ...req.session.clientInfo,
             expires: req.session.cookie._expires
         } :
-        {};
+        { noSession: true };
     res.end(JSON.stringify({
         result: true,
         message: "Session refreshed!",
@@ -196,7 +196,6 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
                 signedIn: true,
                 username: name,
                 userType: 'User',
-                name,
                 email,
                 email_verified,
                 googleAccount: true,
@@ -218,6 +217,25 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
         res.end(JSON.stringify({
             result: false,
             message: `Authorization Headers were not sent to the backend!`
+        }));
+    }
+});
+
+app.post('/rest/authenticate/sign-out', jsonParser, (req, res) => {
+    console.log(`Received a Sign Out request!`);
+    if (req.body.hasOwnProperty('clientInfo')) {
+        console.log('Sucessfully signed out on backend, ClientInfo: ', req.body.clientInfo);
+        req.session.signedIn = false;
+        delete req.session.clientInfo;
+        res.end(JSON.stringify({
+            result: true,
+            message: 'Successfully signed out on the backend!'
+        }));
+    } else {
+        console.log('Failed to signout on backend');
+        res.end(JSON.stringify({
+            result: false,
+            message: 'Failed to sign out!'
         }));
     }
 });
