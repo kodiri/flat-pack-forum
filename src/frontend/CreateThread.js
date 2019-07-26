@@ -8,42 +8,43 @@ class CreateThread extends React.Component {
         super(props);
         this.state = {
             threadTitle: '',
-            threadComment: ''
+            threadComment: '',
+            enableSubmit: false
         };
     }
 
     handleClick = () => {
-        if (this.validateRequest()) {
-            fetch('/rest/submit-thread', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: this.state.threadTitle,
-                    comment: this.state.threadComment
-                })
-            }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
-                if (res.hasOwnProperty('threadNumber')) {
-                    this.props.history.push(`/thread/${res.threadNumber}`);
-                } else {
-                    console.log('Error: Thread could not be created!');
-                }
-            });
-        }
-    }
-
-    validateRequest() {
-        // Check whether the input and/or textareas are empty/invalid
-        // if it isn't, give the user an appropriate error message
-        return true;
+        fetch('/rest/submit-thread', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                title: this.state.threadTitle,
+                comment: this.state.threadComment
+            })
+        }).then(res => res.ok ? res.json() : Promise.reject()).then(res => {
+            if (res.hasOwnProperty('threadNumber')) {
+                this.props.history.push(`/thread/${res.threadNumber}`);
+            } else {
+                console.log('Error: Thread could not be created!');
+            }
+        });
     }
 
     textHandler = event => {
         let value = event.target.value;
         let name = event.target.name;
-        this.setState(() => ({ [name]: value }));
+        this.setState((prevState) => ({
+            [name]: value,
+            enableSubmit: value.length > 0 &&
+                (name === 'threadComment' ? prevState.threadTitle.length > 0 :
+                prevState.threadComment.length > 0)
+        }));
     }
 
     render() {
+        const {
+            threadTitle, threadComment, enableSubmit
+        } = this.state;
         return (
             <div className='CreateThread'>
                 <h1>Create a new thread!</h1>
@@ -52,21 +53,25 @@ class CreateThread extends React.Component {
                     <input name='threadTitle'
                         type='text'
                         placeholder='enter the title'
-                        value={this.state.threadTitle}
+                        value={threadTitle}
                         onChange={this.textHandler} />
                 </div>
                 <div className='threadComment item'>
                     <label htmlFor='threadComment'>First Comment:</label>
                     <textarea name='threadComment'
                         placeholder='enter the comment'
-                        value={this.state.threadComment}
+                        value={threadComment}
                         onChange={this.textHandler} />
                 </div>
                 <button onClick={this.handleClick}
+                    disabled={!enableSubmit}
                     className='item'
                     type='submit'
                     value='SUBMIT'
-                >Create Thread!</button>
+                >{
+                        enableSubmit ? 'Create Thread!' :
+                            'Please enter a title and a comment!'
+                    }</button>
             </div>
         );
     }

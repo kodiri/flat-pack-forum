@@ -28,7 +28,7 @@ class SignUp extends React.Component {
     confirmPasswordChange = e => {
         this.setState({
             confirmPassword: e.target.value,
-            enableSubmit: this.state.password === e.target.value && this.state.confirmPassword.length >= 4 &&
+            enableSubmit: this.state.password === e.target.value && e.target.value.length >= 4 &&
                 this.state.email.includes('@') && this.state.email.includes('.') && this.state.username.length >= 1
         });
     }
