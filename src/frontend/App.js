@@ -6,6 +6,7 @@ import Thread from './Thread';
 import UserProfile from './UserProfile';
 import SignIn from './authentication/SignIn';
 import SignUp from './authentication/SignUp';
+import SignOut from './authentication/SignOut';
 import Header from './common/Header';
 import SideBar from './common/sidebar/SideBar';
 import Footer from './common/Footer';
@@ -56,10 +57,14 @@ class App extends React.Component {
             <SignIn {...props} refreshSession={this.refreshSession} />} />
           <Route exact path='/signUp' render={props =>
             <SignUp {...props} refreshSession={this.refreshSession} />} />
+          <Route exact path='/signOut' render={props =>
+            <SignOut {...props} refreshSession={this.refreshSession} />} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>
-        <SideBar clientInfo={clientInfo} />
+        <SideBar history={this.props.history}
+          clientInfo={clientInfo}
+          refreshSession={this.refreshSession} />
         <Footer />
       </div>) :
       <></>;
