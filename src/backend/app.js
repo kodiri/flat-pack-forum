@@ -1,6 +1,6 @@
 const { User, getUsers } = require('./users');
 const getThreads = require('./threads');
-const throttle60s = require('./spamChecker');
+const throttleSeconds = require('./spamChecker');
 const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
@@ -96,13 +96,20 @@ app.get('/rest/user/:uuid', (req, res) => {
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
     console.log("Submit Thread request received");
     const ipAddress = req.ip;
-    throttle60s(ipAddress, res, () => {
+    throttleSeconds(ipAddress, 10, res, () => {
+        const { username, userType } = req.session.signedIn ? {
+            username: req.session.clientInfo.username,
+            userType: req.session.clientInfo.userType
+        } : {
+                username: 'Guest',
+                userType: 'Guest'
+            };
         const threadNumber = threads.length;
         threads.push(
             {
                 title: req.body.title,
                 number: threadNumber,
-                posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
+                posts: [new Post(username, userType, req.body.comment, Date.now())]
             }
         );
         res.end(JSON.stringify({
@@ -120,9 +127,9 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
         username: req.session.clientInfo.username,
         userType: req.session.clientInfo.userType
     } : {
-        username: req.body.username,
-        userType: 'Guest'
-    };
+            username: req.body.username,
+            userType: 'Guest'
+        };
     const post = req.body.post;
     console.log(`Submit Post request received on Thread ` +
         `<${req.params.threadNumber}> Post: <${post}>`);
@@ -148,12 +155,23 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
     );
 });
 
-app.post('/rest/authenticate/sign-up', jsonParser, (_req, res) => {
+app.post('/rest/authenticate/sign-up', jsonParser, (req, res) => {
     console.log("Received request to sign up!");
-    res.end(JSON.stringify({
-        result: true,
-        message: `Successfully signed up user with standard method`
-    }));
+    let { username, password, email } = req.body;
+    let user = users.find(user => user.email === email);
+    if (user) {
+        res.end(JSON.stringify({
+            result: false,
+            message: `User already exists! (Standard method)`
+        }));
+    } else {
+        const user = signUpUser(req, username, password, email);
+        res.end(JSON.stringify({
+            result: true,
+            message: `Successfully signed up user with standard method`,
+            uuid: user.uuid
+        }));
+    }
 })
 
 app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
@@ -174,33 +192,13 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             return res.ok ? res.json() : Promise.reject();
         }).then(googleRes => {
             console.log("Decoded token: ", googleRes);
-            req.session.signedIn = true;
             const { name, email, email_verified } = googleRes;
             let user = users.find(user => user.email === email);
             if (user) {
-                user.lastActive = Date.now();
+                user = signInUser(req, user, { email_verified });
             } else {
-                user = new User(
-                    name,
-                    'User',
-                    users.length,
-                    email,
-                    'N/A',
-                    Date.now(),
-                    Date.now()
-                );
-                users.push(user);
-                console.log(users);
+                user = signUpUser(req, name, 'noPassword', email, { email_verified });
             }
-            req.session.clientInfo = {
-                signedIn: true,
-                username: name,
-                userType: 'User',
-                email,
-                email_verified,
-                googleAccount: true,
-                uuid: user.uuid
-            };
             console.log(req.session);
             res.end(JSON.stringify({
                 result: true,
@@ -247,6 +245,46 @@ app.get('*', (_req, res) => {
 
 app.listen(port, () => console.log(`Flatpack Express Backend ` +
     `now listening on port ${port}!`));
+
+function signInUser(req, user, googleRes) {
+    console.log('Signing in User: ', user);
+    user.lastActive = Date.now();
+    signInSession(req, user, googleRes);
+    return user;
+}
+
+function signUpUser(req, name, _password, email, googleRes) {
+    console.log('Signing up User. Name: ', name,
+        '\nPassword: ', _password, '\nEmail: ', email,
+        '\nGoogleRes: ', googleRes);
+    const user = new User(
+        name,
+        'User',
+        users.length,
+        email,
+        'N/A',
+        Date.now(),
+        Date.now()
+    );
+    users.push(user);
+    console.log("Adding new user: ", user, "\nUser list: ", users);
+    signInSession(req, user, googleRes);
+    return user;
+}
+
+function signInSession(req, { username, userType, email, uuid }, googleRes) {
+    req.session.signedIn = true;
+    req.session.clientInfo = {
+        signedIn: true,
+        username,
+        userType,
+        email,
+        uuid,
+        ...(googleRes &&
+            { email_verified: googleRes.email_verified, googleAccount: true }
+        )
+    };
+}
 
 function handleThreadRequest(requestedNum, res, handleThread, endpoint = 'endpoint') {
     handleWildcardNum(requestedNum, res, threadNumber => {

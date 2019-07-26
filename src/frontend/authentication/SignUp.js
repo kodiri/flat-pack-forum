@@ -51,6 +51,7 @@ class SignUp extends React.Component {
 
 
     submit = () => {
+        console.log('Sending Sign Up request to backend, state is: ', this.state);
         fetch(`/rest/authenticate/sign-up`, {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -65,7 +66,8 @@ class SignUp extends React.Component {
             console.log(res);
             if (res.result) {
                 console.log(`Successfully signed up with Standard Method: ${res.message}`);
-                this.history.push(`/user/${res.uuid}`);
+                this.props.refreshSession();
+                this.props.history.push(`/user/${res.uuid}`);
             } else {
                 console.log(`Backend failed to sign up user! ${res.message}`);
             }
@@ -110,7 +112,11 @@ class SignUp extends React.Component {
                 <GoogleSignIn className='googleSign'
                     clientId='407818662698-mdsp622g5v0hmi7dsdqp2drvraebgnj4.apps.googleusercontent.com'
                     buttonText='Sign Up with Google!'
-                    onSuccess={res => handleGoogleSignIn(res, this.props.history)}
+                    onSuccess={res => handleGoogleSignIn(
+                        res, 
+                        this.props.history, 
+                        this.props.refreshSession
+                    )}
                     onFailure={handleGoogleFailure} />
             </div>
         );
