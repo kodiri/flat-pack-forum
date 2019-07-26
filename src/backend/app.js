@@ -175,13 +175,21 @@ app.post('/rest/authenticate/sign-up', jsonParser, (req, res) => {
 })
 
 app.post('/rest/authenticate/sign-in', jsonParser, (req, res) => {
-    req.session.signedIn = true;
-    const username = '';
-    console.log(req.session);
-    res.end(JSON.stringify({
-        result: true,
-        message: `Successfully signed in as user ${username} with standard method`
-    }));
+    const email = req.body.email;
+    let user = users.find(user => user.email === email);
+    if (user) {
+        user = signInUser(req, user);
+        res.end(JSON.stringify({
+            result: true,
+            message: `Successfully signed in as user ${user.username} with standard method`,
+            uuid: user.uuid
+        }));
+    } else {
+        res.end(JSON.stringify({
+            result: false,
+            message: `User does not exist!`
+        }));
+    }
 });
 
 app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {

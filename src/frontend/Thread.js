@@ -65,9 +65,9 @@ class SubmitPost extends React.Component {
     handleText = event => {
         const name = event.target.name;
         const value = event.target.value;
-        this.setState(() => ({
-            [name] : value,
-            enableSubmit: [name].length > 0
+        this.setState((prevState) => ({
+            [name]: value,
+            enableSubmit: name === 'post' ? value.length > 0 : prevState.post.length > 0
         }));
     }
 
