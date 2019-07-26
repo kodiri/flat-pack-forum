@@ -2,7 +2,7 @@ import React from 'react';
 import SideBarIcon from './SideBarIcon';
 import NavigationBarLink from '../NavigationBarLink';
 import { GoogleLogout } from 'react-google-login';
-import handleLogout from '../../authentication/handleLogout';
+import handleSignOut from '../../authentication/handleSignOut';
 
 import './SideBar.css';
 
@@ -41,7 +41,7 @@ export default class SideBar extends React.Component {
                                 <GoogleLogout
                                     clientId='407818662698-mdsp622g5v0hmi7dsdqp2drvraebgnj4.apps.googleusercontent.com'
                                     buttonText='Sign Out'
-                                    onLogoutSuccess={() => handleLogout(this.props.clientInfo, 
+                                    onLogoutSuccess={() => handleSignOut(this.props.clientInfo, 
                                         this.props.history, 
                                         this.props.refreshSession,
                                         () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import handleLogout from './handleLogout';
+import handleSignOut from './handleSignOut';
 
 export default class SignOut extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ export default class SignOut extends React.Component {
     }
 
     componentDidMount() {
-        handleLogout(this.props.clientInfo, this.props.history, this.props.refreshSession, () => {
+        handleSignOut(this.props.clientInfo, this.props.history, this.props.refreshSession, () => {
             console.log("Signed out!");
             this.setState({signedOut: true});
         });

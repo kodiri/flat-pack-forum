@@ -1,6 +1,6 @@
 let spamSet = new Set();
 
-module.exports = function throttle60s(ipAddress, res, onNotSpam) {
+module.exports = function throttleSeconds(ipAddress, seconds, res, onNotSpam) {
     console.log("IP Address of the request is: ", ipAddress);
     if (spamSet.has(ipAddress)) {
         console.log(`IP Address ${ipAddress} is already in current requests, must wait at least 60 seconds`
@@ -14,6 +14,6 @@ module.exports = function throttle60s(ipAddress, res, onNotSpam) {
         spamSet.add(ipAddress);
         setTimeout(() => {
             spamSet.delete(ipAddress);
-        }, 60 * 1000);
+        }, seconds * 1000);
     }
 }

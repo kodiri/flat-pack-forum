@@ -58,7 +58,10 @@ class App extends React.Component {
           <Route exact path='/signUp' render={props =>
             <SignUp {...props} refreshSession={this.refreshSession} />} />
           <Route exact path='/signOut' render={props =>
-            <SignOut {...props} refreshSession={this.refreshSession} />} />
+            <SignOut 
+              {...props} 
+              clientInfo={clientInfo} 
+              refreshSession={this.refreshSession} />} />
           <Route exact path='/not-found' component={NotFound} />
           <Route path='/:invalid' component={NotFound} />
         </Switch>

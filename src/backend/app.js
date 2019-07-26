@@ -1,6 +1,6 @@
 const { User, getUsers } = require('./users');
 const getThreads = require('./threads');
-const throttle60s = require('./spamChecker');
+const throttleSeconds = require('./spamChecker');
 const sessionStore = require('./sessionStore');
 const express = require('express');
 const app = express();
@@ -96,13 +96,20 @@ app.get('/rest/user/:uuid', (req, res) => {
 app.post('/rest/submit-thread', jsonParser, (req, res) => {
     console.log("Submit Thread request received");
     const ipAddress = req.ip;
-    throttle60s(ipAddress, res, () => {
+    throttleSeconds(ipAddress, 10, res, () => {
+        const { username, userType } = req.session.signedIn ? {
+            username: req.session.clientInfo.username,
+            userType: req.session.clientInfo.userType
+        } : {
+                username: 'Guest',
+                userType: 'Guest'
+            };
         const threadNumber = threads.length;
         threads.push(
             {
                 title: req.body.title,
                 number: threadNumber,
-                posts: [new Post('Guest', 'Guest', req.body.comment, Date.now())]
+                posts: [new Post(username, userType, req.body.comment, Date.now())]
             }
         );
         res.end(JSON.stringify({
@@ -150,7 +157,7 @@ app.post('/rest/submit-post/:threadNumber', jsonParser, (req, res) => {
 
 app.post('/rest/authenticate/sign-up', jsonParser, (req, res) => {
     console.log("Received request to sign up!");
-    let {name, password, email} = req.body;
+    let { username, password, email } = req.body;
     let user = users.find(user => user.email === email);
     if (user) {
         res.end(JSON.stringify({
@@ -158,10 +165,11 @@ app.post('/rest/authenticate/sign-up', jsonParser, (req, res) => {
             message: `User already exists! (Standard method)`
         }));
     } else {
-        signUpUser(req, name, password, email);
+        const user = signUpUser(req, username, password, email);
         res.end(JSON.stringify({
             result: true,
-            message: `Successfully signed up user with standard method`
+            message: `Successfully signed up user with standard method`,
+            uuid: user.uuid
         }));
     }
 })
@@ -187,9 +195,9 @@ app.post('/rest/authenticate/sign-in/google', jsonParser, (req, res) => {
             const { name, email, email_verified } = googleRes;
             let user = users.find(user => user.email === email);
             if (user) {
-                user = signInUser(req, user, {email_verified});
+                user = signInUser(req, user, { email_verified });
             } else {
-                user = signUpUser(req, name, 'noPassword', email, {email_verified});
+                user = signUpUser(req, name, 'noPassword', email, { email_verified });
             }
             console.log(req.session);
             res.end(JSON.stringify({
@@ -246,7 +254,7 @@ function signInUser(req, user, googleRes) {
 }
 
 function signUpUser(req, name, _password, email, googleRes) {
-    console.log('Signing up User. Name: ', name, 
+    console.log('Signing up User. Name: ', name,
         '\nPassword: ', _password, '\nEmail: ', email,
         '\nGoogleRes: ', googleRes);
     const user = new User(
@@ -264,7 +272,7 @@ function signUpUser(req, name, _password, email, googleRes) {
     return user;
 }
 
-function signInSession(req, {username, userType, email, uuid}, googleRes) {
+function signInSession(req, { username, userType, email, uuid }, googleRes) {
     req.session.signedIn = true;
     req.session.clientInfo = {
         signedIn: true,
