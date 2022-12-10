@@ -7,7 +7,7 @@
     "dotenv": "^8.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.16.2",
     "memorystore": "^1.6.1",
     "node-fetch": "^2.6.0",
